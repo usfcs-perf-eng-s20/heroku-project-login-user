@@ -1,8 +1,13 @@
 package Model;
 
+import javax.persistence.*;
 import java.util.Date;
 
-public class User {
+@Entity
+@Table(name = "users")
+public class Users {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int userId;
     private String userName;
     private String email;

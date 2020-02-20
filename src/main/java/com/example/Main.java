@@ -66,11 +66,12 @@ public class Main {
   String index() {
     return "index";
   }
-
+  User user = new User();
   @RequestMapping("/hello")
   String hello(Map<String, Object> model) {
     RelativisticModel.select();
     Amount<Mass> m = Amount.valueOf("12 GeV").to(KILOGRAM);
+    model.put("DATA = ",user.getUserName());
     model.put("science", "E=mc^2: 12 GeV = " + m.toString());
     return "hello";
   }

@@ -127,16 +127,21 @@ public class Main {
   String db(Map<String, Object> model) {
     try (Connection connection = dataSource.getConnection()) {
       Statement stmt = connection.createStatement() ;
+      System.out.println("TABLE IS CREATED = " +stmt);
+        stmt.executeUpdate("CREATE TABLE IF NOT EXISTS users (userId INT AUTO_INCREMENT, " +
+                "userName VARCHAR (50), email VARCHAR (50) NOT NULL UNIQUE , password VARCHAR (50) NOT NULL, age INT, city VARCHAR(50)," +
+                "loginFrequency INT AUTO_INCREMENT, lastLogin DATE )");
+        stmt.executeUpdate("INSERT INTO TABLE users VALUES('dharti', 'dpm@gmail.com', '12345' , '25', 'sf', now())");
 //      stmt.executeUpdate("CREATE TABLE IF NOT EXISTS ticks (tick timestamp)");
 //      stmt.executeUpdate("INSERT INTO ticks VALUES (now())");
-//      ResultSet rs = stmt.executeQuery("SELECT tick FROM ticks");
+      ResultSet rs = stmt.executeQuery("SELECT userName FROM users");
 //
-//      ArrayList<String> output = new ArrayList<String>();
-//      while (rs.next()) {
-//        output.add("Read from DB: " + rs.getTimestamp("tick"));
-//      }
-//
-//      model.put("records", output);
+      ArrayList<String> output = new ArrayList<String>();
+      while (rs.next()) {
+        output.add("Read from DB: " + rs.getTimestamp("userName"));
+      }
+
+      model.put("records", output);
       return "db";
     } catch (Exception e) {
       model.put("message", e.getMessage());

@@ -66,11 +66,12 @@ public class Main {
   String index() {
     return "index";
   }
-
+  //User user = new User();
   @RequestMapping("/hello")
   String hello(Map<String, Object> model) {
     RelativisticModel.select();
     Amount<Mass> m = Amount.valueOf("12 GeV").to(KILOGRAM);
+   // model.put("DATA = ",user.getUserName());
     model.put("science", "E=mc^2: 12 GeV = " + m.toString());
     return "hello";
   }
@@ -80,7 +81,7 @@ public class Main {
   public String loggedIn(HttpServletRequest request){
     String test = request.getRequestURI(); //request get id
     throw new ResponseStatusException(
-        HttpStatus.UNAUTHORIZED, "Unauthorized user");
+            HttpStatus.UNAUTHORIZED, "Unauthorized user");
   }
 
 
@@ -89,7 +90,7 @@ public class Main {
   public ResponseEntity<Object> addEmployee( ) throws Exception
   {
     throw new ResponseStatusException(
-        HttpStatus.NOT_FOUND, "Not found");
+            HttpStatus.NOT_FOUND, "Not found");
   }
 
   ///signup
@@ -97,7 +98,7 @@ public class Main {
   public String signup(HttpServletRequest request){
     String test = request.getRequestURI(); //request get id
     throw new ResponseStatusException(
-        HttpStatus.FORBIDDEN, "duplicate user");
+            HttpStatus.FORBIDDEN, "duplicate user");
   }
 
   ///getUserInfo
@@ -105,7 +106,7 @@ public class Main {
   public String getUserInfo(HttpServletRequest request){
     String test = request.getRequestURI();
     throw new ResponseStatusException(
-        HttpStatus.NOT_FOUND, "user is not found");
+            HttpStatus.NOT_FOUND, "user is not found");
   }
 
 
@@ -115,7 +116,7 @@ public class Main {
   public String getPageView(HttpServletRequest request){
     String test = request.getRequestURI();
     throw new ResponseStatusException(
-        HttpStatus.SERVICE_UNAVAILABLE, "This server is not accessible");
+            HttpStatus.SERVICE_UNAVAILABLE, "This server is not accessible");
   }
 
 
@@ -126,19 +127,14 @@ public class Main {
   @RequestMapping("/db")
   String db(Map<String, Object> model) {
     try (Connection connection = dataSource.getConnection()) {
-      Statement stmt = connection.createStatement() ;
-      System.out.println("TABLE IS CREATED = " +stmt);
-        stmt.executeUpdate("CREATE TABLE IF NOT EXISTS users (userId INT AUTO_INCREMENT, " +
-                "userName VARCHAR (50), email VARCHAR (50) NOT NULL UNIQUE , password VARCHAR (50) NOT NULL, age INT, city VARCHAR(50)," +
-                "loginFrequency INT AUTO_INCREMENT, lastLogin DATE )");
-        stmt.executeUpdate("INSERT INTO TABLE users VALUES('dharti', 'dpm@gmail.com', '12345' , '25', 'sf', now())");
-//      stmt.executeUpdate("CREATE TABLE IF NOT EXISTS ticks (tick timestamp)");
-//      stmt.executeUpdate("INSERT INTO ticks VALUES (now())");
-      ResultSet rs = stmt.executeQuery("SELECT userName FROM users");
-//
+      Statement stmt = connection.createStatement();
+      stmt.executeUpdate("CREATE TABLE IF NOT EXISTS ticks (tick timestamp)");
+      stmt.executeUpdate("INSERT INTO ticks VALUES (now())");
+      ResultSet rs = stmt.executeQuery("SELECT tick FROM ticks");
+
       ArrayList<String> output = new ArrayList<String>();
       while (rs.next()) {
-        output.add("Read from DB: " + rs.getTimestamp("userName"));
+        output.add("Read from DB: " + rs.getTimestamp("tick"));
       }
 
       model.put("records", output);

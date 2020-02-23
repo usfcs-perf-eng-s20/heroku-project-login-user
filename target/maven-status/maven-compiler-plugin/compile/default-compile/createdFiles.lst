@@ -1,4 +1,6 @@
-com/example/loginuser/model/User.class
 com/example/loginuser/LoginUserApplication.class
+com/example/loginuser/service/UserServiceInterface.class
 com/example/loginuser/controller/UserController.class
+com/example/loginuser/model/Users.class
 com/example/loginuser/service/UserRepository.class
+com/example/loginuser/service/UserService.class

@@ -17,10 +17,10 @@ public class Users {
     @Column(name = "userName", length = 50)
     private String userName;
 
-    @Column(name = "email", unique = true, length = 50) //nullable = false
+    @Column(name = "email", unique = true, length = 50, nullable = false) //nullable = false
     private String email;
 
-    @Column(name = "password", length = 50) //nullable false
+    @Column(name = "password", length = 50, nullable = false) //nullable false
     private String password;
 
     @Column(name = "age")
@@ -103,10 +103,15 @@ public class Users {
 
     public Users() {}
 
-    public Users(String userName)
+    public Users(String userName, String email, int age, String city, String password)
     {
         this.userName = userName;
+        this.email = email;
+        this.age = age;
+        this.city = city;
+        this.password = password;
     }
+
 
 
 

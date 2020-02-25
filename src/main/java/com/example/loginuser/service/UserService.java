@@ -15,7 +15,7 @@ public class UserService implements UserServiceInterface{
     //this is dummy and not working
     @Override
     public boolean saveUsers(Users user) {
-        userRepository.save(new Users("dharti"));
+//        userRepository.save(new Users("dharti"));
         if(userRepository.count() > 1)
             return true;
         return false;

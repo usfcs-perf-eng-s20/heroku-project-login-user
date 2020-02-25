@@ -26,7 +26,7 @@ public class LoginUserApplication {
 	ApplicationRunner applicationRunner(UserRepository userRepository)
 	{
 		return args -> {
-			userRepository.save(new Users("hello"));
+
 
 		};
 	}

@@ -1,6 +1,8 @@
 package com.example.loginuser.controller;
 
-import com.example.loginuser.model.User;
+//import com.example.loginuser.model.Users;
+
+//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import com.example.loginuser.model.Users;
 import com.example.loginuser.service.UserRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -22,10 +24,12 @@ public class UserController {
 
     @Autowired
     private UserRepository userRepository;
+    //private BCryptPasswordEncoder bCryptPasswordEncoder; //to encrypt password
 
-    UserController(UserRepository userRepository)
+    UserController(UserRepository userRepository)//, //BCryptPasswordEncoder bCryptPasswordEncoder)
     {
         this.userRepository = userRepository;
+        //this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     @GetMapping("/")
@@ -33,20 +37,47 @@ public class UserController {
         return "hello";
     }
 
+    //this is dummy api and u can see all users here--> remove it once we implement everything
     @GetMapping("/user")
     List<Users> getUser()
     {
         return (List<Users>) userRepository.findAll();
     }
 
-    @GetMapping("/isLoggedIn")
+    @GetMapping("/isLoggedIn") //this is for other services to check 
+//    whether user is logged in or not...we can do JWT in general and give them token if user is logged in
     public String isLoggedIn() {
-        return "index";
+        return "";
     }
 
-    @GetMapping("/login")
-    public String loginCheck() {
-        return "";
+    @PostMapping(path = "/login", consumes ="application/json", produces = "application/json")
+    public ResponseEntity<?> login(@RequestBody String jsonString) {
+    	ObjectMapper mapper = new ObjectMapper();
+        Map<String, Object> responseMap = new HashMap<>();
+        int id = -1;
+        //Convert JSON to POJO
+        try {
+            Users checkUser = mapper.readValue(jsonString, Users.class);
+//           System.out.println("USERS = " + checkUser.getEmail() + " " + checkUser.getPassword());
+            List<Users> users = userRepository.findByEmailAndPassword(checkUser.getEmail(), checkUser.getPassword());
+            //System.out.println("users = " + users);
+            if (users.size() >= 1) {
+                id = users.get(0).getUserId();
+                responseMap.put("userId", id);
+            }else
+            {
+            	responseMap.put("error", "incorrect email / password");
+            }
+            System.out.println("UserID " + id);
+
+            
+        } catch (JsonProcessingException e) {
+            System.out.println("signup Json parse error");
+        } catch (@SuppressWarnings("hiding") IOException e) {
+            e.printStackTrace();
+        }
+
+        return new ResponseEntity<Object>(responseMap, HttpStatus.OK);
     }
 
 
@@ -57,10 +88,10 @@ public class UserController {
         int id = -1;
         //Convert JSON to POJO
         try {
-            User newUser = mapper.readValue(jsonString, User.class);
+            Users newUser = mapper.readValue(jsonString, Users.class);
             userRepository.save(new Users(newUser.getUserName(), newUser.getEmail(), newUser.getAge(), newUser.getCity(), newUser.getPassword()));
 
-            List<Users> users = userRepository.findByEmailAndPassword(newUser.getEmail());
+            List<Users> users = userRepository.findByEmail(newUser.getEmail());
             if (users.size() >= 1) {
                 id = users.get(0).getUserId();
             }

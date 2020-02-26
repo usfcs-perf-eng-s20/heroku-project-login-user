@@ -111,8 +111,11 @@ public class Users {
         this.city = city;
         this.password = password;
     }
-
-
-
+    
+    public Users(String email, String password)
+    {
+    	this.email = email;
+    	this.password = password;
+    }
 
 }

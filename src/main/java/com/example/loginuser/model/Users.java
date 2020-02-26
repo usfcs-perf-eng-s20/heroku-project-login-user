@@ -17,10 +17,10 @@ public class Users {
     @Column(name = "userName", length = 50)
     private String userName;
 
-    @Column(name = "email", unique = true, length = 50, nullable = false) //nullable = false
+    @Column(name = "email", unique = true, length = 50, nullable = false) 
     private String email;
 
-    @Column(name = "password", length = 50, nullable = false) //nullable false
+    @Column(name = "password", length = 50, nullable = false) 
     private String password;
 
     @Column(name = "age")
@@ -112,6 +112,7 @@ public class Users {
         this.password = password;
     }
     
+    //to check login
     public Users(String email, String password)
     {
     	this.email = email;

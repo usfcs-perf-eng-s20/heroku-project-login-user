@@ -49,17 +49,20 @@ public class UserController {
 
     @GetMapping("/isLoggedIn") //this is for other services to check 
 //    whether user is logged in or not...we can do JWT in general and give them token if user is logged in
-    public String isLoggedIn(HttpServletRequest request) {
+    public String isLoggedIn(HttpServletRequest request, HttpServletResponse response) {
         for (Cookie c: request.getCookies()) {
             //set failed login in cookie
             if (c.getName().equals(loginCookieName)) {
                 if (c.getValue().equals("true")) {
                     System.out.println("login in");
                     return "true";
+                } else {
+                    return "false";
                 }
             }
         }
-
+        Cookie cookie = new Cookie(loginCookieName, "false");
+        response.addCookie(cookie);
         return "false";
     }
 

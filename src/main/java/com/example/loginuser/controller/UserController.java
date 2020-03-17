@@ -4,6 +4,7 @@ package com.example.loginuser.controller;
 
 //import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import com.example.loginuser.model.Users;
+import com.example.loginuser.service.UpdateService;
 import com.example.loginuser.service.UserRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,6 +28,9 @@ public class UserController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private UpdateService updateService;
     //private BCryptPasswordEncoder bCryptPasswordEncoder; //to encrypt password
 
     UserController(UserRepository userRepository)//, //BCryptPasswordEncoder bCryptPasswordEncoder)
@@ -49,21 +53,19 @@ public class UserController {
 
     @GetMapping("/isLoggedIn") //this is for other services to check 
 //    whether user is logged in or not...we can do JWT in general and give them token if user is logged in
-    public String isLoggedIn(HttpServletRequest request, HttpServletResponse response) {
-        for (Cookie c: request.getCookies()) {
-            //set failed login in cookie
-            if (c.getName().equals(loginCookieName)) {
-                if (c.getValue().equals("true")) {
-                    System.out.println("login in");
-                    return "true";
-                } else {
-                    return "false";
-                }
-            }
+    public Map<String, Object> isLoggedIn(@RequestParam("userId") int userId, HttpServletRequest request, HttpServletResponse response)
+        throws IOException {
+        List<Users> users  =  userRepository.findUserByID(userId);
+        Map<String, Object> responseMap = new HashMap<>();
+        if (users.size() >= 1) {
+            responseMap.put("userLoggedIn", userRepository.isLoggedIn(userId));
+        } else {
+            //user doesn't exist
+            response.sendError(500);
+
+            System.out.println("Uer dones't exist");
         }
-        Cookie cookie = new Cookie(loginCookieName, "false");
-        response.addCookie(cookie);
-        return "false";
+        return responseMap;
     }
 
 
@@ -81,28 +83,17 @@ public class UserController {
                 System.out.println("+++");
                 id = users.get(0).getUserId();
                 responseMap.put("userId", id);
-                response.addCookie(cookie);
+                int row = updateService.loggedIn(true, id);
+                if (row >= 1) {
+                    System.out.println("change vlaue");
+                }
+
             }else {
             	responseMap.put("error", "incorrect email / password");
                 //set failed login in cookie
-            	if (request.getCookies().length == 0) {
-            	    System.out.println("worng");
-                  Cookie cookie = new Cookie(loginCookieName, "false");
-                  response.addCookie(cookie);
-              } else {
-                  for (Cookie c: request.getCookies()) {
-                      if (c.getName().equals(loginCookieName)) {
-                          System.out.println("00");
-                          Cookie cookie = new Cookie(loginCookieName, "false");
-                          response.addCookie(cookie);
-                      }
-                  }
-              }
-
             }
             System.out.println("UserID " + id);
 
-            
         } catch (JsonProcessingException e) {
             System.out.println("signup Json parse error");
         } catch (@SuppressWarnings("hiding") IOException e) {
@@ -124,7 +115,7 @@ public class UserController {
         //Convert JSON to POJO
         try {
             Users newUser = mapper.readValue(jsonString, Users.class);
-            userRepository.save(new Users(newUser.getUserName(), newUser.getEmail(), newUser.getAge(), newUser.getCity(), newUser.getPassword()));
+            userRepository.save(new Users(newUser.getUserName(), newUser.getEmail(), newUser.getAge(), newUser.getCity(), newUser.getPassword(), false));
 
             List<Users> users = userRepository.findByEmail(newUser.getEmail());
             if (users.size() >= 1) {

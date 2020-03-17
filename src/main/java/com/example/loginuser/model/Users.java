@@ -37,6 +37,9 @@ public class Users {
     @LastModifiedDate
     private Date lastLogin;
 
+    @Column(name = "isLoggedIn" )
+    private boolean isLoggedIn = false;
+
     public int getUserId() {
         return userId;
     }
@@ -103,13 +106,14 @@ public class Users {
 
     public Users() {}
 
-    public Users(String userName, String email, int age, String city, String password)
+    public Users(String userName, String email, int age, String city, String password, boolean isLoggedIn)
     {
         this.userName = userName;
         this.email = email;
         this.age = age;
         this.city = city;
         this.password = password;
+        this.isLoggedIn = isLoggedIn;
     }
     
     public Users(String email, String password)

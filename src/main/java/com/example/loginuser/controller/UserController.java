@@ -29,7 +29,7 @@ import java.util.Map;
 @RestController
 public class UserController {
     String loginCookieName = "isloggedIn";
-    Cookie cookie = new Cookie(loginCookieName, "true");
+    //Cookie cookie = new Cookie(loginCookieName, "true");
     EdrForm edr;
     @Autowired
     private UserRepository userRepository;
@@ -71,7 +71,7 @@ public class UserController {
 //    whether user is logged in or not...we can do JWT in general and give them token if user is logged in
     public Map<String, Object> isLoggedIn(@RequestParam("userId") int userId, HttpServletRequest request, HttpServletResponse response)
         throws IOException {
-    	Instant startTime = Instant.now();
+    	Instant startTime = Instant.now(); //for save-edr
         List<Users> users  =  userRepository.findUserByID(userId);
         Map<String, Object> responseMap = new HashMap<>();
         if (users.size() >= 1) {
@@ -81,6 +81,7 @@ public class UserController {
             response.sendError(500);
             System.out.println("Uer dones't exist");
         }
+        //for Save-edr === START
         int responseCode = response.getStatus();
         boolean successValue = false;
         if(responseCode == 200)
@@ -88,23 +89,26 @@ public class UserController {
         	successValue = true;
         }
         Instant stopTime = Instant.now();
-        //System.out.println(users);
-        edr = new EdrForm(request.getMethod(), request.getPathInfo(), (int)Duration.between(startTime, stopTime).toMillis(), Integer.toString(responseCode), "login-service", successValue, Long.toString(System.currentTimeMillis()), users.get(userId).getUserName());  
+        //System.out.println("users = "+ users.get(0).getUserName());
+        edr = new EdrForm(request.getMethod(), request.getRequestURI(), (int)Duration.between(startTime, stopTime).toMillis(), Integer.toString(responseCode), "login-service", successValue, Long.toString(System.currentTimeMillis()), users.get(0).getUserName());  
         saveEdr(edr);
+        //END OF SAVE_EDR
         return responseMap;
     }
 
 
     @PostMapping(path = "/login", consumes ="application/json", produces = "application/json")
     public ResponseEntity<?> login(@RequestBody String jsonString, HttpServletResponse response, HttpServletRequest request) {
+    	Instant startTime = Instant.now(); //for save-edr
     	ObjectMapper mapper = new ObjectMapper();
+    	List<Users> users = null;
         Map<String, Object> responseMap = new HashMap<>();
         int id = -1;
         //Convert JSON to POJO
         try {
             Users checkUser = mapper.readValue(jsonString, Users.class);
 //           System.out.println("USERS = " + checkUser.getEmail() + " " + checkUser.getPassword());
-            List<Users> users = userRepository.findByEmailAndPassword(checkUser.getEmail(), checkUser.getPassword());
+            users = userRepository.findByEmailAndPassword(checkUser.getEmail(), checkUser.getPassword());
             if (users.size() >= 1) {
                 System.out.println("+++");
                 id = users.get(0).getUserId();
@@ -125,13 +129,26 @@ public class UserController {
         } catch (@SuppressWarnings("hiding") IOException e) {
             e.printStackTrace();
         }
-        
+      //for Save-edr === START
+        int responseCode = response.getStatus();
+        boolean successValue = false;
+        if(responseCode == 200)
+        {
+        	successValue = true;
+        }
+        Instant stopTime = Instant.now();
+        System.out.println("users = "+ users.get(0).getUserName());
+        edr = new EdrForm(request.getMethod(), request.getRequestURI(), (int)Duration.between(startTime, stopTime).toMillis(), Integer.toString(responseCode), "login-service", successValue, Long.toString(System.currentTimeMillis()), users.get(0).getUserName());  
+        saveEdr(edr);
+        //END OF SAVE_EDR
         return new ResponseEntity<Object>(responseMap, HttpStatus.OK);
     }
 
     @PostMapping(path = "/signup", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<?> signup(@RequestBody String jsonString)  {
+    public ResponseEntity<?> signup(@RequestBody String jsonString, HttpServletResponse response, HttpServletRequest request)  {
+    	Instant startTime = Instant.now(); //for save-edr
         ObjectMapper mapper = new ObjectMapper();
+        List<Users> users = null;
         Map<String, Object> responseMap = new HashMap<>();
         int id = -1;
         //Convert JSON to POJO
@@ -139,7 +156,7 @@ public class UserController {
             Users newUser = mapper.readValue(jsonString, Users.class);
             userRepository.save(new Users(newUser.getUserName(), newUser.getEmail(), newUser.getAge(), newUser.getCity(), newUser.getPassword(), false));
 
-            List<Users> users = userRepository.findByEmail(newUser.getEmail());
+            users = userRepository.findByEmail(newUser.getEmail());
             if (users.size() >= 1) {
                 id = users.get(0).getUserId();
             }
@@ -151,12 +168,23 @@ public class UserController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        //START saveEDR code
+        int responseCode = response.getStatus();
+        boolean successValue = false;
+        if(responseCode == 200)
+        {
+        	successValue = true;
+        }
+        Instant stopTime = Instant.now(); //for save-edr
+        System.out.println("users = "+ users.get(0).getUserName());
+        edr = new EdrForm(request.getMethod(), request.getRequestURI(), (int)Duration.between(startTime, stopTime).toMillis(), Integer.toString(responseCode), "login-service", successValue, Long.toString(System.currentTimeMillis()), users.get(0).getUserName());  
+        saveEdr(edr);
         return new ResponseEntity(responseMap, HttpStatus.OK);
     }
 
     @GetMapping("/getUserInfo")
-    public ResponseEntity<?>  userInf(@RequestParam("userId") int userId) {
+    public ResponseEntity<?>  userInf(@RequestParam("userId") int userId, HttpServletResponse response, HttpServletRequest request) {
+    	Instant startTime = Instant.now(); //for save-edr
         Map<String, Object> responseMap = new HashMap<>();
         List<Users> users  =  userRepository.findUserByID(userId);
         if (users.size() >= 1) {
@@ -165,8 +193,18 @@ public class UserController {
             responseMap.put("email", user.getEmail());
             responseMap.put("age", user.getAge());
             responseMap.put("city", user.getCity());
-
         }
+        //START saveEDR code
+        int responseCode = response.getStatus();
+        boolean successValue = false;
+        if(responseCode == 200)
+        {
+        	successValue = true;
+        }
+        Instant stopTime = Instant.now(); //for save-edr
+        System.out.println("users = "+ users.get(0).getUserName());
+        edr = new EdrForm(request.getMethod(), request.getRequestURI(), (int)Duration.between(startTime, stopTime).toMillis(), Integer.toString(responseCode), "login-service", successValue, Long.toString(System.currentTimeMillis()), users.get(0).getUserName());  
+        saveEdr(edr);
         return new ResponseEntity(responseMap, HttpStatus.OK);
     }
 
@@ -179,7 +217,8 @@ public class UserController {
     	String jsonString = gson.toJson(edr); // this gives me request body
     	System.out.println(jsonString);
     	//now attached this requestBody with api of analytics team and send them. 
-//    	Do this for all API's
+    	String pathForRequest = "https://prod-analytics-boot.herokuapp.com/";
+    	//now need to create request and pass this "jsonString" as request body to /saveEdr path of Analytics team.
 		return null;
     	
     }

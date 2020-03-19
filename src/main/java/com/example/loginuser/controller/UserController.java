@@ -11,20 +11,31 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 
+import okhttp3.OkHttpClient;
+import okhttp3.Response;
+import org.omg.CORBA.Request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
 
 @RestController
 public class UserController {
@@ -46,11 +57,11 @@ public class UserController {
 
     @GetMapping("/")
     public String hello() {
-    	//Instant start = Instant.now();
+    	Instant start = Instant.now();
     	String hello = "hello";
-        //Instant stop = Instant.now();
-        //edr = new EdrForm("get", "/user", (int)Duration.between(start, stop).toMillis(), "200", "login-team", true, Long.toString(System.currentTimeMillis()), "test");
-        //saveEdr(edr);
+        Instant stop = Instant.now();
+        edr = new EdrForm("get", "/user", (int)Duration.between(start, stop).toMillis(), "200", "login-team", true, Long.toString(System.currentTimeMillis()), "test");
+        saveEdr(edr);
         return hello;
     }
 
@@ -210,16 +221,45 @@ public class UserController {
 
     
     //implement save-edr api 
-    @PostMapping(path = "/saveEdr", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<?> saveEdr(EdrForm edr)
-    {
+//    @PostMapping(path = "/saveEdr", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<?> saveEdr(EdrForm edr) {
     	Gson gson = new Gson();
     	String jsonString = gson.toJson(edr); // this gives me request body
     	System.out.println(jsonString);
     	//now attached this requestBody with api of analytics team and send them. 
     	String pathForRequest = "https://prod-analytics-boot.herokuapp.com/";
     	//now need to create request and pass this "jsonString" as request body to /saveEdr path of Analytics team.
+        try {
+            sendPOST(jsonString);
+        } catch (IOException e) {
+            System.out.println("gg" + e.getStackTrace());
+        }
+
 		return null;
     	
     }
+
+    private static void sendPOST(String jsonInputString) throws IOException {
+        URL url = new URL ("https://prod-analytics-boot.herokuapp.com/saveEdr");
+        HttpURLConnection con = (HttpURLConnection)url.openConnection();
+        con.setRequestMethod("POST");
+        con.setRequestProperty("Content-Type", "application/json; utf-8");
+        con.setRequestProperty("Accept", "application/json");
+        con.setDoOutput(true);
+        try(OutputStream os = con.getOutputStream()) {
+            byte[] input = jsonInputString.getBytes("utf-8");
+            os.write(input, 0, input.length);
+        }
+        try(BufferedReader br = new BufferedReader(
+            new InputStreamReader(con.getInputStream(), "utf-8"))) {
+            StringBuilder response = new StringBuilder();
+            String responseLine = null;
+            while ((responseLine = br.readLine()) != null) {
+                response.append(responseLine.trim());
+            }
+            System.out.println("response" + response.toString());
+        }
+    }
+
+
 }

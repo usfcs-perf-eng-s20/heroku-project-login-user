@@ -17,6 +17,7 @@ public class EdrForm {
 		this.method = method;
 		this.path = path;
 		this.processingTimeInMiliseconds = time;
+		this.responseCode = responseCode;
 		this.success = success;
 		this.timestamp = timestamp;
 		this.username = username;

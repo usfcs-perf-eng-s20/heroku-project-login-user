@@ -33,10 +33,13 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 
+//TODO: add config parameter
+//TODO: add response code as per error and success msg
+//TODO: add error handling for database query.
+
+
 @RestController
 public class UserController {
-    String loginCookieName = "isloggedIn";
-    //Cookie cookie = new Cookie(loginCookieName, "true");
     EdrForm edr;
     @Autowired
     private UserRepository userRepository;
@@ -45,11 +48,12 @@ public class UserController {
     private UpdateService updateService;
     //private BCryptPasswordEncoder bCryptPasswordEncoder; //to encrypt password
 
-    UserController(UserRepository userRepository)//, //BCryptPasswordEncoder bCryptPasswordEncoder)
+    UserController(UserRepository userRepository) //BCryptPasswordEncoder bCryptPasswordEncoder)
     {
         this.userRepository = userRepository;
     }
 
+    	//dummy api
     @GetMapping("/")
     public String hello() {
     	Instant start = Instant.now();
@@ -73,8 +77,8 @@ public class UserController {
         return result;
     }
 
+    //MOST IMPORTANT API
     @GetMapping("/isLoggedIn") //this is for other services to check 
-//    whether user is logged in or not...we can do JWT in general and give them token if user is logged in
     public Map<String, Object> isLoggedIn(@RequestParam("userId") int userId, HttpServletRequest request, HttpServletResponse response)
         throws IOException {
     	Instant startTime = Instant.now(); //for save-edr
@@ -103,6 +107,7 @@ public class UserController {
         return responseMap;
     }
 
+    //ADD CONFIG FOR THIS API AND ERROR HANDLING OF DATABASE
     @PostMapping(path = "/login", consumes ="application/json", produces = "application/json")
     public ResponseEntity<?> login(@RequestBody String jsonString, HttpServletResponse response, HttpServletRequest request) {
     	Instant startTime = Instant.now(); //for save-edr
@@ -115,7 +120,6 @@ public class UserController {
         //Convert JSON to POJO
         try {
             Users checkUser = mapper.readValue(jsonString, Users.class);
-//           System.out.println("USERS = " + checkUser.getEmail() + " " + checkUser.getPassword());
             users = userRepository.findByEmailAndPassword(checkUser.getEmail(), checkUser.getPassword());
             if (users.size() >= 1) {
             	userName = users.get(0).getUserName();
@@ -162,7 +166,6 @@ public class UserController {
         saveEdr(edr);
         //END OF SAVE_EDR
         return new ResponseEntity<Object>(responseMap, responseStatus);
-        //return 
     }
 
     @PostMapping(path = "/signup", consumes = "application/json", produces = "application/json")
@@ -234,12 +237,12 @@ public class UserController {
         //TODO:// send response code with error msg 
         return new ResponseEntity(responseMap, HttpStatus.OK);
     }
-    //implement save-edr api 
+
 //    @PostMapping(path = "/saveEdr", consumes = "application/json", produces = "application/json")
     public ResponseEntity<?> saveEdr(EdrForm edr) {
     	//TODO check if able to pass data to analytics team or not
-    	//If success then return 200
-    	//if not able to send data then send error response code 
+    	//TODO: If success then return 200
+    	//TODO: if not able to send data then send error response code 
     	Gson gson = new Gson();
     	String jsonString = gson.toJson(edr); // this gives me request body
     	System.out.println("String = " + jsonString);

@@ -99,6 +99,7 @@ public class UserController {
         edr = new EdrForm(request.getMethod(), request.getRequestURI(), (int)Duration.between(startTime, stopTime).toMillis(), Integer.toString(responseCode), "login-service", successValue, Long.toString(System.currentTimeMillis()), users.get(0).getUserName());  
         saveEdr(edr);
         //END OF SAVE_EDR
+        //TODO: send response code with error msg
         return responseMap;
     }
 
@@ -157,8 +158,6 @@ public class UserController {
         }
         System.out.println(responseCode);
         Instant stopTime = Instant.now();
-        //ask in class for username or email for authentication.
-        //System.out.println("users = "+ users.get(0).getUserName());
         edr = new EdrForm(request.getMethod(), request.getRequestURI(), (int)Duration.between(startTime, stopTime).toMillis(), Integer.toString(responseCode), "login-service", successValue, Long.toString(System.currentTimeMillis()), userName);  
         saveEdr(edr);
         //END OF SAVE_EDR
@@ -170,6 +169,8 @@ public class UserController {
     public ResponseEntity<?> signup(@RequestBody String jsonString, HttpServletResponse response, HttpServletRequest request)  {
     	Instant startTime = Instant.now(); //for save-edr
         ObjectMapper mapper = new ObjectMapper();
+        //TODO:// check if user exist or not
+        //if user exist then need to set some error code
         List<Users> users = null;
         Map<String, Object> responseMap = new HashMap<>();
         int id = -1;
@@ -201,12 +202,15 @@ public class UserController {
         System.out.println("users = "+ users.get(0).getUserName());
         edr = new EdrForm(request.getMethod(), request.getRequestURI(), (int)Duration.between(startTime, stopTime).toMillis(), Integer.toString(responseCode), "login-service", successValue, Long.toString(System.currentTimeMillis()), users.get(0).getUserName());  
         saveEdr(edr);
+        //TODO: send response code as per success or error
         return new ResponseEntity(responseMap, HttpStatus.OK);
     }
 
     @GetMapping("/getUserInfo")
     public ResponseEntity<?>  userInf(@RequestParam("userId") int userId, HttpServletResponse response, HttpServletRequest request) {
     	Instant startTime = Instant.now(); //for save-edr
+    	//TODO:// if user exist then give details and response code 200
+    	//TODO:// if user doesn't exist then set some error code and return it with error msg
         Map<String, Object> responseMap = new HashMap<>();
         List<Users> users  =  userRepository.findUserByID(userId);
         if (users.size() >= 1) {
@@ -227,11 +231,15 @@ public class UserController {
         System.out.println("users = "+ users.get(0).getUserName());
         edr = new EdrForm(request.getMethod(), request.getRequestURI(), (int)Duration.between(startTime, stopTime).toMillis(), Integer.toString(responseCode), "login-service", successValue, Long.toString(System.currentTimeMillis()), users.get(0).getUserName());  
         saveEdr(edr);
+        //TODO:// send response code with error msg 
         return new ResponseEntity(responseMap, HttpStatus.OK);
     }
     //implement save-edr api 
 //    @PostMapping(path = "/saveEdr", consumes = "application/json", produces = "application/json")
     public ResponseEntity<?> saveEdr(EdrForm edr) {
+    	//TODO check if able to pass data to analytics team or not
+    	//If success then return 200
+    	//if not able to send data then send error response code 
     	Gson gson = new Gson();
     	String jsonString = gson.toJson(edr); // this gives me request body
     	System.out.println("String = " + jsonString);
@@ -258,6 +266,7 @@ public class UserController {
         } catch (IOException e) {
             System.out.println("gg" + e.getStackTrace());
         }
+        //TODO send response code as per data save or not
 		return null;
     }
 

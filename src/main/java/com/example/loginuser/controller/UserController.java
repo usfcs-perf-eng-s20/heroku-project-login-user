@@ -105,7 +105,6 @@ public class UserController {
         	successValue = true;
         }
         Instant stopTime = Instant.now();
-        //System.out.println("users = "+ users.get(0).getUserName());
         edr = new EdrForm(request.getMethod(), request.getRequestURI(), (int)Duration.between(startTime, stopTime).toMillis(), Integer.toString(responseCode), "login-service", successValue, Long.toString(System.currentTimeMillis()), users.get(0).getUserName());
         saveEdr(edr);
         //END OF SAVE_EDR
@@ -272,8 +271,6 @@ public class UserController {
                 }
                 System.out.println("response" + response.toString());
             }
-
-
             //TODO: succeed,  200
             //call this con.getResponseCode() to check error code
         } catch (IOException e) {
@@ -306,6 +303,5 @@ public class UserController {
 //            System.out.println("response" + response.toString());
 //        }
 //    }
-
 
 }

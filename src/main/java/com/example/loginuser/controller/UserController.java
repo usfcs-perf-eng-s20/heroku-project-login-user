@@ -33,9 +33,10 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 
-//TODO: add config parameter
+//TODO: add config parameter(finish for /user and need to be done for other api)
 //TODO: add response code as per error and success msg
-//TODO: add error handling for database query.
+//TODO: add error handling(try catch exception) for database query when use UserRepository
+//TODO: refactor the code for create start time and create new EdrForm and  calling saveEDR.  make them into a function
 
 
 @RestController
@@ -67,19 +68,24 @@ public class UserController {
     //this is dummy api and u can see all users here--> remove it once we implement everything
     
     @GetMapping("/user")
-    List<Users> getUser()
+    List<Users> getUser(@RequestParam(defaultValue = "false", required=false) String config)
     {
     	Instant start = Instant.now();
         List<Users> result = (List<Users>) userRepository.findAll();
         Instant stop = Instant.now();
         edr = new EdrForm("get", "/user", (int)Duration.between(start, stop).toMillis(), "200", "login-team", true, Long.toString(System.currentTimeMillis()), "test");
-        saveEdr(edr);
+        if (config != null && config.equals("true")) {
+            saveEdr(edr);
+            System.out.println("call anaylistic team");
+        } else {
+            System.out.println("not call anaylistic team");
+        }
         return result;
     }
 
     //MOST IMPORTANT API
-    @GetMapping("/isLoggedIn") //this is for other services to check 
-    public Map<String, Object> isLoggedIn(@RequestParam("userId") int userId, HttpServletRequest request, HttpServletResponse response)
+    @GetMapping("/isLoggedIn") //this is for other services to check
+    public Map<String, Object> isLoggedIn(@RequestParam(defaultValue = "false", required=false) String config, @RequestParam("userId") int userId, HttpServletRequest request, HttpServletResponse response)
         throws IOException {
     	Instant startTime = Instant.now(); //for save-edr
         List<Users> users  =  userRepository.findUserByID(userId);
@@ -100,7 +106,7 @@ public class UserController {
         }
         Instant stopTime = Instant.now();
         //System.out.println("users = "+ users.get(0).getUserName());
-        edr = new EdrForm(request.getMethod(), request.getRequestURI(), (int)Duration.between(startTime, stopTime).toMillis(), Integer.toString(responseCode), "login-service", successValue, Long.toString(System.currentTimeMillis()), users.get(0).getUserName());  
+        edr = new EdrForm(request.getMethod(), request.getRequestURI(), (int)Duration.between(startTime, stopTime).toMillis(), Integer.toString(responseCode), "login-service", successValue, Long.toString(System.currentTimeMillis()), users.get(0).getUserName());
         saveEdr(edr);
         //END OF SAVE_EDR
         //TODO: send response code with error msg
@@ -109,7 +115,7 @@ public class UserController {
 
     //ADD CONFIG FOR THIS API AND ERROR HANDLING OF DATABASE
     @PostMapping(path = "/login", consumes ="application/json", produces = "application/json")
-    public ResponseEntity<?> login(@RequestBody String jsonString, HttpServletResponse response, HttpServletRequest request) {
+    public ResponseEntity<?> login(@RequestParam(defaultValue = "false", required=false) String config, @RequestBody String jsonString, HttpServletResponse response, HttpServletRequest request) {
     	Instant startTime = Instant.now(); //for save-edr
     	ObjectMapper mapper = new ObjectMapper();
     	List<Users> users = null;
@@ -132,7 +138,7 @@ public class UserController {
                 }
 
             }else {
-            	
+
             	userName = userRepository.findUserNameByEmail(checkUser.getEmail());
             	//set responsecode
             	if(userName == null || userName == "")
@@ -162,14 +168,14 @@ public class UserController {
         }
         System.out.println(responseCode);
         Instant stopTime = Instant.now();
-        edr = new EdrForm(request.getMethod(), request.getRequestURI(), (int)Duration.between(startTime, stopTime).toMillis(), Integer.toString(responseCode), "login-service", successValue, Long.toString(System.currentTimeMillis()), userName);  
+        edr = new EdrForm(request.getMethod(), request.getRequestURI(), (int)Duration.between(startTime, stopTime).toMillis(), Integer.toString(responseCode), "login-service", successValue, Long.toString(System.currentTimeMillis()), userName);
         saveEdr(edr);
         //END OF SAVE_EDR
         return new ResponseEntity<Object>(responseMap, responseStatus);
     }
 
     @PostMapping(path = "/signup", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<?> signup(@RequestBody String jsonString, HttpServletResponse response, HttpServletRequest request)  {
+    public ResponseEntity<?> signup(@RequestParam(defaultValue = "false", required=false) String config, @RequestBody String jsonString, HttpServletResponse response, HttpServletRequest request)  {
     	Instant startTime = Instant.now(); //for save-edr
         ObjectMapper mapper = new ObjectMapper();
         //TODO:// check if user exist or not
@@ -203,14 +209,14 @@ public class UserController {
         }
         Instant stopTime = Instant.now(); //for save-edr
         System.out.println("users = "+ users.get(0).getUserName());
-        edr = new EdrForm(request.getMethod(), request.getRequestURI(), (int)Duration.between(startTime, stopTime).toMillis(), Integer.toString(responseCode), "login-service", successValue, Long.toString(System.currentTimeMillis()), users.get(0).getUserName());  
+        edr = new EdrForm(request.getMethod(), request.getRequestURI(), (int)Duration.between(startTime, stopTime).toMillis(), Integer.toString(responseCode), "login-service", successValue, Long.toString(System.currentTimeMillis()), users.get(0).getUserName());
         saveEdr(edr);
         //TODO: send response code as per success or error
         return new ResponseEntity(responseMap, HttpStatus.OK);
     }
 
     @GetMapping("/getUserInfo")
-    public ResponseEntity<?>  userInf(@RequestParam("userId") int userId, HttpServletResponse response, HttpServletRequest request) {
+    public ResponseEntity<?>  userInf(@RequestParam(defaultValue = "false", required=false) String config, @RequestParam("userId") int userId, HttpServletResponse response, HttpServletRequest request) {
     	Instant startTime = Instant.now(); //for save-edr
     	//TODO:// if user exist then give details and response code 200
     	//TODO:// if user doesn't exist then set some error code and return it with error msg
@@ -232,9 +238,9 @@ public class UserController {
         }
         Instant stopTime = Instant.now(); //for save-edr
         System.out.println("users = "+ users.get(0).getUserName());
-        edr = new EdrForm(request.getMethod(), request.getRequestURI(), (int)Duration.between(startTime, stopTime).toMillis(), Integer.toString(responseCode), "login-service", successValue, Long.toString(System.currentTimeMillis()), users.get(0).getUserName());  
+        edr = new EdrForm(request.getMethod(), request.getRequestURI(), (int)Duration.between(startTime, stopTime).toMillis(), Integer.toString(responseCode), "login-service", successValue, Long.toString(System.currentTimeMillis()), users.get(0).getUserName());
         saveEdr(edr);
-        //TODO:// send response code with error msg 
+        //TODO:// send response code with error msg
         return new ResponseEntity(responseMap, HttpStatus.OK);
     }
 
@@ -242,7 +248,7 @@ public class UserController {
     public ResponseEntity<?> saveEdr(EdrForm edr) {
     	//TODO check if able to pass data to analytics team or not
     	//TODO: If success then return 200
-    	//TODO: if not able to send data then send error response code 
+    	//TODO: if not able to send data then send error response code
     	Gson gson = new Gson();
     	String jsonString = gson.toJson(edr); // this gives me request body
     	System.out.println("String = " + jsonString);
@@ -266,8 +272,14 @@ public class UserController {
                 }
                 System.out.println("response" + response.toString());
             }
+
+
+            //TODO: succeed,  200
+            //call this con.getResponseCode() to check error code
         } catch (IOException e) {
+            //TODO: failed to call analytics team ,  errorcode larger than 200
             System.out.println("gg" + e.getStackTrace());
+
         }
         //TODO send response code as per data save or not
 		return null;

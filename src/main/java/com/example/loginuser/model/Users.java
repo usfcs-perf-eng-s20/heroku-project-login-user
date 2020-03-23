@@ -115,11 +115,5 @@ public class Users {
         this.password = password;
         this.isLoggedIn = isLoggedIn;
     }
-    
-    public Users(String email, String password)
-    {
-    	this.email = email;
-    	this.password = password;
-    }
 
 }

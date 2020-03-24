@@ -73,7 +73,7 @@ public class UserController {
     	Instant start = Instant.now();
         List<Users> result = (List<Users>) userRepository.findAll();
         Instant stop = Instant.now();
-        edr = new EdrForm("get", "/user", (int)Duration.between(start, stop).toMillis(), "200", "login-team", true, Long.toString(System.currentTimeMillis()), "test");
+        edr = new EdrForm("get", "/user", (int)Duration.between(start, stop).toMillis(), "200", "loginService/user", true, Long.toString(System.currentTimeMillis()), "test");
         if (config != null && config.equals("true")) {
             saveEdr(edr);
             System.out.println("call anaylistic team");
@@ -85,31 +85,39 @@ public class UserController {
 
     //MOST IMPORTANT API
     @GetMapping("/isLoggedIn") //this is for other services to check
-    public Map<String, Object> isLoggedIn(@RequestParam(defaultValue = "false", required=false) String config, @RequestParam("userId") int userId, HttpServletRequest request, HttpServletResponse response)
+    public ResponseEntity<?> isLoggedIn(@RequestParam(defaultValue = "false", required=false) String config, @RequestParam("userId") int userId, HttpServletRequest request, HttpServletResponse response)
         throws IOException {
     	Instant startTime = Instant.now(); //for save-edr
-        List<Users> users  =  userRepository.findUserByID(userId);
+        HttpStatus responseStatus = HttpStatus.OK;
+        Users user  =  userRepository.findUserByID(userId);
         Map<String, Object> responseMap = new HashMap<>();
-        if (users.size() >= 1) {
+        if (user != null) {
             responseMap.put("userLoggedIn", userRepository.isLoggedIn(userId));
         } else {
-            //user doesn't exist
-            response.setStatus(500); //change it to setstatus
-            responseMap.put("error" ,"User doesn't exist");
+            responseStatus = HttpStatus.BAD_REQUEST;
+            responseMap.put("error" ,"user does not exist, please try again");
         }
         //for Save-edr === START
         int responseCode = response.getStatus();
         boolean successValue = false;
-        if(responseCode == 200)
-        {
+        if(responseCode == 200 && !responseMap.containsKey("error")) {
         	successValue = true;
+        } else {
+            if (!responseMap.containsKey("error")) {
+                responseMap.put("error", "error occurs, please try again");
+                responseStatus = HttpStatus.BAD_REQUEST;
+            }
+        }
+        String userName = "";
+        if (!responseMap.containsKey("error")) {
+            userName = user.getUserName();
         }
         Instant stopTime = Instant.now();
-        edr = new EdrForm(request.getMethod(), request.getRequestURI(), (int)Duration.between(startTime, stopTime).toMillis(), Integer.toString(responseCode), "login-service", successValue, Long.toString(System.currentTimeMillis()), users.get(0).getUserName());
+        edr = new EdrForm(request.getMethod(), request.getRequestURI(), (int)Duration.between(startTime, stopTime).toMillis(), Integer.toString(responseCode), "loginService/isLoggedIn", successValue, Long.toString(System.currentTimeMillis()), userName);
         saveEdr(edr);
         //END OF SAVE_EDR
         //TODO: send response code with error msg
-        return responseMap;
+        return new ResponseEntity<Object>(responseMap, responseStatus);
     }
 
     //ADD CONFIG FOR THIS API AND ERROR HANDLING OF DATABASE
@@ -155,19 +163,20 @@ public class UserController {
 
         } catch (JsonProcessingException e) {
             System.out.println("signup Json parse error");
-        } catch (@SuppressWarnings("hiding") IOException e) {
-            e.printStackTrace();
         }
-      //for Save-edr === START
+        //for Save-edr === START
         int responseCode = response.getStatus();
         boolean successValue = false;
-        if(responseCode == 200)
-        {
+        if(responseCode == 200 && !responseMap.containsKey("error")) {
         	successValue = true;
+        } else {
+            if (!responseMap.containsKey("error")) {
+                responseMap.put("error", "error occurs, please try again");
+                responseStatus = HttpStatus.BAD_REQUEST;
+            }
         }
-        System.out.println(responseCode);
         Instant stopTime = Instant.now();
-        edr = new EdrForm(request.getMethod(), request.getRequestURI(), (int)Duration.between(startTime, stopTime).toMillis(), Integer.toString(responseCode), "login-service", successValue, Long.toString(System.currentTimeMillis()), userName);
+        edr = new EdrForm(request.getMethod(), request.getRequestURI(), (int)Duration.between(startTime, stopTime).toMillis(), Integer.toString(responseCode), "loginService/login", successValue, Long.toString(System.currentTimeMillis()), userName);
         saveEdr(edr);
         //END OF SAVE_EDR
         return new ResponseEntity<Object>(responseMap, responseStatus);
@@ -176,71 +185,108 @@ public class UserController {
     @PostMapping(path = "/signup", consumes = "application/json", produces = "application/json")
     public ResponseEntity<?> signup(@RequestParam(defaultValue = "false", required=false) String config, @RequestBody String jsonString, HttpServletResponse response, HttpServletRequest request)  {
     	Instant startTime = Instant.now(); //for save-edr
+        HttpStatus responseStatus = HttpStatus.OK;
         ObjectMapper mapper = new ObjectMapper();
-        //TODO:// check if user exist or not
-        //if user exist then need to set some error code
         List<Users> users = null;
         Map<String, Object> responseMap = new HashMap<>();
         int id = -1;
         //Convert JSON to POJO
         try {
             Users newUser = mapper.readValue(jsonString, Users.class);
-            userRepository.save(new Users(newUser.getUserName(), newUser.getEmail(), newUser.getAge(), newUser.getCity(), newUser.getPassword(), false));
-
-            users = userRepository.findByEmail(newUser.getEmail());
-            if (users.size() >= 1) {
-                id = users.get(0).getUserId();
+            // check if user exists
+            String userName  =  userRepository.findUserNameByEmail(newUser.getEmail());
+            if (userName == null || userName.equals("")) {
+                userRepository.save(new Users(newUser.getUserName(), newUser.getEmail(), newUser.getAge(), newUser.getCity(), newUser.getPassword(), false));
+                users = userRepository.findByEmail(newUser.getEmail());
+                if (users.size() >= 1) {
+                    id = users.get(0).getUserId();
+                    responseMap.put("userId", id);
+                } else {
+                    responseMap.put("error", "error when creating new user, please try again");
+                    responseStatus = HttpStatus.BAD_REQUEST;
+                }
+            } else {
+                responseMap.put("error", "user already exists, please try again");
+                responseStatus = HttpStatus.BAD_REQUEST;
             }
-            System.out.println("UserID " + id);
-
-            responseMap.put("userId", id);
-        } catch (JsonProcessingException e) {
-            System.out.println("signup Json parse error");
         } catch (IOException e) {
-            e.printStackTrace();
+            //System.out.println("signup Json parse error");
+            responseMap.put("error", "some error occurs, please try again");
+            responseStatus = HttpStatus.BAD_REQUEST;
         }
         //START saveEDR code
         int responseCode = response.getStatus();
         boolean successValue = false;
-        if(responseCode == 200)
+        if(responseCode == 200 && !responseMap.containsKey("error"))
         {
         	successValue = true;
+        } else {
+            if (!responseMap.containsKey("error")) {
+                responseMap.put("error", "error occurs, please try again");
+                responseStatus = HttpStatus.BAD_REQUEST;
+            }
         }
         Instant stopTime = Instant.now(); //for save-edr
-        System.out.println("users = "+ users.get(0).getUserName());
-        edr = new EdrForm(request.getMethod(), request.getRequestURI(), (int)Duration.between(startTime, stopTime).toMillis(), Integer.toString(responseCode), "login-service", successValue, Long.toString(System.currentTimeMillis()), users.get(0).getUserName());
+        String userName = "";
+        if (!responseMap.containsKey("error")) {
+            userName = users.get(0).getUserName();
+        }
+        edr = new EdrForm(request.getMethod(), request.getRequestURI(), (int)Duration.between(startTime, stopTime).toMillis(), Integer.toString(responseCode), "loginService/signup", successValue, Long.toString(System.currentTimeMillis()), userName);
         saveEdr(edr);
         //TODO: send response code as per success or error
-        return new ResponseEntity(responseMap, HttpStatus.OK);
+        return new ResponseEntity(responseMap, responseStatus);
     }
 
     @GetMapping("/getUserInfo")
-    public ResponseEntity<?>  userInf(@RequestParam(defaultValue = "false", required=false) String config, @RequestParam("userId") int userId, HttpServletResponse response, HttpServletRequest request) {
-    	Instant startTime = Instant.now(); //for save-edr
+    public ResponseEntity<?>  userInf(@RequestParam(defaultValue = "false", required=false) String config, @RequestParam("userId")  Integer[] userIds, HttpServletResponse response, HttpServletRequest request) {
+        Instant startTime = Instant.now(); //for save-edr
+        HttpStatus responseStatus = HttpStatus.OK;
     	//TODO:// if user exist then give details and response code 200
     	//TODO:// if user doesn't exist then set some error code and return it with error msg
         Map<String, Object> responseMap = new HashMap<>();
-        List<Users> users  =  userRepository.findUserByID(userId);
-        if (users.size() >= 1) {
-            Users user = users.get(0);
-            responseMap.put("userName", user.getUserName());
-            responseMap.put("email", user.getEmail());
-            responseMap.put("age", user.getAge());
-            responseMap.put("city", user.getCity());
+        List<Users> users  =  userRepository.findUserByIDs(userIds);
+        List<Object> responseArray = new ArrayList<>();
+        List<String> userNames = new ArrayList<>();
+        if (users != null && users.size() >= 1) {
+            for (int i = 0; i < users.size(); i++) {
+                Users user = users.get(i);
+                Map<String, Object> subResponseMap = new HashMap<>();
+                subResponseMap.put("userName", user.getUserName());
+                subResponseMap.put("email", user.getEmail());
+                subResponseMap.put("age", user.getAge());
+                subResponseMap.put("city", user.getCity());
+                responseArray.add(user);
+                userNames.add(user.getUserName());
+            }
+            responseMap.put("users", responseArray);
+        } else {
+            responseMap.put("error", "user does not exist, please try again");
+            responseStatus = HttpStatus.BAD_REQUEST;
         }
         //START saveEDR code
         int responseCode = response.getStatus();
         boolean successValue = false;
-        if(responseCode == 200)
+        if(responseCode == 200 && !responseMap.containsKey("error"))
         {
         	successValue = true;
+        } else {
+            if (!responseMap.containsKey("error")) {
+                responseMap.put("error", "error occurs, please try again");
+                responseStatus = HttpStatus.BAD_REQUEST;
+            }
         }
         Instant stopTime = Instant.now(); //for save-edr
-        System.out.println("users = "+ users.get(0).getUserName());
-        edr = new EdrForm(request.getMethod(), request.getRequestURI(), (int)Duration.between(startTime, stopTime).toMillis(), Integer.toString(responseCode), "login-service", successValue, Long.toString(System.currentTimeMillis()), users.get(0).getUserName());
-        saveEdr(edr);
-        //TODO:// send response code with error msg
-        return new ResponseEntity(responseMap, HttpStatus.OK);
+
+        if (responseMap.containsKey("error")) {
+            edr = new EdrForm(request.getMethod(), request.getRequestURI(), (int) Duration.between(startTime, stopTime).toMillis(), Integer.toString(responseCode), "loginService/getUserInfo", successValue, Long.toString(System.currentTimeMillis()), "");
+            saveEdr(edr);
+        } else {
+            for (String userName : userNames) {
+                edr = new EdrForm(request.getMethod(), request.getRequestURI(), (int) Duration.between(startTime, stopTime).toMillis(), Integer.toString(responseCode), "loginService/getUserInfo", successValue, Long.toString(System.currentTimeMillis()), userName);
+                saveEdr(edr);
+            }
+        }
+        return new ResponseEntity(responseMap, responseStatus);
     }
 
 //    @PostMapping(path = "/saveEdr", consumes = "application/json", produces = "application/json")

@@ -4,12 +4,10 @@
     <list default="true" id="eb56418a-21ed-4af2-af57-bffef9791b6a" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/loginuser/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/loginuser/controller/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/loginuser/LoginUserApplication.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/loginuser/LoginUserApplication.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/loginuser/model/Users.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/loginuser/model/Users.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/example/loginuser/controller/UserController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/loginuser/controller/UserController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/loginuser/service/UserService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/loginuser/service/UserService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/loginuser/service/UserServiceInterface.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/loginuser/service/UserServiceInterface.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/com/example/loginuser/LoginUsersApplicationTests.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/com/example/loginuser/LoginUsersApplicationTests.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/loginuser/model/Users.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/loginuser/model/Users.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/loginuser/service/UserRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/loginuser/service/UserRepository.class" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -136,14 +134,7 @@
       <option name="project" value="LOCAL" />
       <updated>1584942804313</updated>
     </task>
-    <task id="LOCAL-00004" summary="add analystic team api flag to user apit endpoint">
-      <created>1584990973758</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1584990973758</updated>
-    </task>
-    <option name="localTasksCounter" value="5" />
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
@@ -176,7 +167,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="add isloggedin cookie value" />
-    <MESSAGE value="add analystic team api flag to user apit endpoint" />
-    <option name="LAST_COMMIT_MESSAGE" value="add analystic team api flag to user apit endpoint" />
+    <option name="LAST_COMMIT_MESSAGE" value="add isloggedin cookie value" />
   </component>
 </project>

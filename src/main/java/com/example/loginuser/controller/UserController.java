@@ -114,7 +114,9 @@ public class UserController {
         }
         Instant stopTime = Instant.now();
         edr = new EdrForm(request.getMethod(), request.getRequestURI(), (int)Duration.between(startTime, stopTime).toMillis(), Integer.toString(responseCode), "loginService/isLoggedIn", successValue, Long.toString(System.currentTimeMillis()), userName);
-        saveEdr(edr);
+        if (config != null && config.equals("true")) {
+            saveEdr(edr);
+        }
         //END OF SAVE_EDR
         //TODO: send response code with error msg
         return new ResponseEntity<Object>(responseMap, responseStatus);
@@ -177,7 +179,9 @@ public class UserController {
         }
         Instant stopTime = Instant.now();
         edr = new EdrForm(request.getMethod(), request.getRequestURI(), (int)Duration.between(startTime, stopTime).toMillis(), Integer.toString(responseCode), "loginService/login", successValue, Long.toString(System.currentTimeMillis()), userName);
-        saveEdr(edr);
+        if (config != null && config.equals("true")) {
+            saveEdr(edr);
+        }
         //END OF SAVE_EDR
         return new ResponseEntity<Object>(responseMap, responseStatus);
     }
@@ -232,7 +236,9 @@ public class UserController {
             userName = users.get(0).getUserName();
         }
         edr = new EdrForm(request.getMethod(), request.getRequestURI(), (int)Duration.between(startTime, stopTime).toMillis(), Integer.toString(responseCode), "loginService/signup", successValue, Long.toString(System.currentTimeMillis()), userName);
-        saveEdr(edr);
+        if (config != null && config.equals("true")) {
+            saveEdr(edr);
+        }
         //TODO: send response code as per success or error
         return new ResponseEntity(responseMap, responseStatus);
     }
@@ -279,11 +285,15 @@ public class UserController {
 
         if (responseMap.containsKey("error")) {
             edr = new EdrForm(request.getMethod(), request.getRequestURI(), (int) Duration.between(startTime, stopTime).toMillis(), Integer.toString(responseCode), "loginService/getUserInfo", successValue, Long.toString(System.currentTimeMillis()), "");
-            saveEdr(edr);
+            if (config != null && config.equals("true")) {
+                saveEdr(edr);
+            }
         } else {
             for (String userName : userNames) {
                 edr = new EdrForm(request.getMethod(), request.getRequestURI(), (int) Duration.between(startTime, stopTime).toMillis(), Integer.toString(responseCode), "loginService/getUserInfo", successValue, Long.toString(System.currentTimeMillis()), userName);
-                saveEdr(edr);
+                if (config != null && config.equals("true")) {
+                    saveEdr(edr);
+                }
             }
         }
         return new ResponseEntity(responseMap, responseStatus);

@@ -118,13 +118,8 @@ public class UserController {
         //for Save-edr === START
         int responseCode = response.getStatus();
         boolean successValue = false;
-        if(responseCode == 200 && !responseMap.containsKey("error")) {
-        	successValue = true;
-        } else {
-            if (!responseMap.containsKey("error")) {
-                responseMap.put("error", "error occurs, please try again");
-                responseStatus = HttpStatus.BAD_REQUEST;
-            }
+        if(responseCode == 200) {
+            successValue = true;
         }
         String userName = "";
         if (!responseMap.containsKey("error")) {
@@ -160,9 +155,6 @@ public class UserController {
                 id = users.get(0).getUserId();
                 responseMap.put("userId", id);
                 int row = updateService.loggedIn(true, id);
-                if (row >= 1) {
-                    System.out.println("change vlaue");
-                }
 
             }else {
 
@@ -179,7 +171,6 @@ public class UserController {
             	responseMap.put("error", "incorrect email / password");
                 //set failed login in cookie
             }
-            System.out.println("UserID " + id);
 
         } catch (JsonProcessingException e) {
             System.out.println("signup Json parse error");
@@ -187,13 +178,8 @@ public class UserController {
         //for Save-edr === START
         int responseCode = response.getStatus();
         boolean successValue = false;
-        if(responseCode == 200 && !responseMap.containsKey("error")) {
+        if(responseCode == 200) {
         	successValue = true;
-        } else {
-            if (!responseMap.containsKey("error")) {
-                responseMap.put("error", "error occurs, please try again");
-                responseStatus = HttpStatus.BAD_REQUEST;
-            }
         }
         Instant stopTime = Instant.now();
         edr = new EdrForm(request.getMethod(), request.getRequestURI(), (int)Duration.between(startTime, stopTime).toMillis(), Integer.toString(responseCode), "loginService/login", successValue, Long.toString(System.currentTimeMillis()), userName);
@@ -239,14 +225,9 @@ public class UserController {
         //START saveEDR code
         int responseCode = response.getStatus();
         boolean successValue = false;
-        if(responseCode == 200 && !responseMap.containsKey("error"))
+        if(responseCode == 200)
         {
         	successValue = true;
-        } else {
-            if (!responseMap.containsKey("error")) {
-                responseMap.put("error", "error occurs, please try again");
-                responseStatus = HttpStatus.BAD_REQUEST;
-            }
         }
         Instant stopTime = Instant.now(); //for save-edr
         String userName = "";
@@ -279,7 +260,7 @@ public class UserController {
                 subResponseMap.put("email", user.getEmail());
                 subResponseMap.put("age", user.getAge());
                 subResponseMap.put("city", user.getCity());
-                responseArray.add(user);
+                responseArray.add(subResponseMap);
                 userNames.add(user.getUserName());
             }
             responseMap.put("users", responseArray);
@@ -290,14 +271,9 @@ public class UserController {
         //START saveEDR code
         int responseCode = response.getStatus();
         boolean successValue = false;
-        if(responseCode == 200 && !responseMap.containsKey("error"))
+        if(responseCode == 200)
         {
         	successValue = true;
-        } else {
-            if (!responseMap.containsKey("error")) {
-                responseMap.put("error", "error occurs, please try again");
-                responseStatus = HttpStatus.BAD_REQUEST;
-            }
         }
         Instant stopTime = Instant.now(); //for save-edr
 

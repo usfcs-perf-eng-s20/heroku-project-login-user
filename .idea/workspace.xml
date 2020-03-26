@@ -127,7 +127,14 @@
       <option name="project" value="LOCAL" />
       <updated>1584942804313</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="add config api">
+      <created>1585118854602</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1585118854603</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TodoView">
@@ -157,6 +164,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="add isloggedin cookie value" />
-    <option name="LAST_COMMIT_MESSAGE" value="add isloggedin cookie value" />
+    <MESSAGE value="add config api" />
+    <option name="LAST_COMMIT_MESSAGE" value="add config api" />
   </component>
 </project>

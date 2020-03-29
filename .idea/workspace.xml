@@ -2,13 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="eb56418a-21ed-4af2-af57-bffef9791b6a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/loginuser/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/loginuser/controller/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/loginuser/service/UpdateService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/loginuser/service/UpdateService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/loginuser/service/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/loginuser/service/UserRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/example/loginuser/controller/UserController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/loginuser/controller/UserController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/loginuser/model/Users.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/loginuser/model/Users.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/example/loginuser/service/UserRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/loginuser/service/UserRepository.class" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />

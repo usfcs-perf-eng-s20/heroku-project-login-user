@@ -27,10 +27,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 @RestController
@@ -45,15 +42,15 @@ public class UserController {
     {
         this.userRepository = userRepository;
     }
-    //read config files and get values for config and all
-    Config config = readJsonFile("config.json");
-    //todo: add five glable variable
-
+    boolean isFave = false;
+    boolean isSearch = false;
+    boolean isLogin = false;
+    boolean isAnalytics = false;
 
     @GetMapping("/user")
     List<Users> getUser()
     {
-        System.out.println(config.isAnalytics());
+        System.out.println("Analytics: " + isAnalytics);
         Instant start = Instant.now();
         List<Users> result = (List<Users>) userRepository.findAll();
         Instant stop = Instant.now();
@@ -62,24 +59,25 @@ public class UserController {
         return result;
     }
 
-    
+//
     @PutMapping("/config")
     public ResponseEntity<?> updateConfig(@RequestBody Config jsonString) {
-    	Map<String, Object> responseMap = new HashMap<>();
-    	config.setFaves(jsonString.isFaves());
-    	config.setSearch(jsonString.isSearch());
-    	config.setLogin(jsonString.isLogin());
-    	config.setAnalytics(jsonString.isAnalytics());
-    	responseMap.put("confirm" , true);
-    	responseMap.put("message", "Config updated successfully");
-    	return new ResponseEntity<Object>(responseMap, HttpStatus.OK);
+        Map<String, Object> responseMap = new HashMap<>();
+        isFave =  jsonString.isFaves();
+        isSearch =   jsonString.isSearch();
+        isLogin = jsonString.isLogin();
+        System.out.println("Analystics before: " + isAnalytics);
+        isAnalytics =  jsonString.isAnalytics();
+        System.out.println("Analystics after: " + isAnalytics);
+        responseMap.put("confirm" , true);
+        responseMap.put("message", "Config updated successfully");
+        return new ResponseEntity<Object>(responseMap, HttpStatus.OK);
     }
 
 
     @GetMapping("/isLoggedIn")
     public ResponseEntity<?> isLoggedIn( @RequestParam("userId") int userId, HttpServletRequest request, HttpServletResponse response)
         throws IOException {
-        //TODO: refactor code for save edr  part
     	  Instant startTime = Instant.now(); //for save-edr
         HttpStatus responseStatus = HttpStatus.OK;
         //check user based on user id
@@ -127,10 +125,8 @@ public class UserController {
             	userName = users.get(0).getUserName();
                 id = users.get(0).getUserId();
                 responseMap.put("userId", id);
-
-                //TODO: update last login field time  stamp
-                int row = updateService.loggedIn(true, id);
-
+                Date date = new Date();
+                int row = updateService.loggedIn(true, date, id);
             }else {
                 //user is not found
             	userName = userRepository.findUserNameByEmail(checkUser.getEmail());
@@ -225,6 +221,7 @@ public class UserController {
                 subResponseMap.put("email", user.getEmail());
                 subResponseMap.put("age", user.getAge());
                 subResponseMap.put("city", user.getCity());
+                subResponseMap.put("userId", user.getUserId());
                 responseArray.add(subResponseMap);
                 userNames.add(user.getUserName());
             }
@@ -256,7 +253,7 @@ public class UserController {
 
 
     public void saveEdr(EdrForm edr) {
-        if (config.isAnalytics()) {
+        if (isAnalytics) {
             System.out.println("call anaylistic team");
             Gson gson = new Gson();
             String jsonString = gson.toJson(edr); // this gives me request body
@@ -297,23 +294,6 @@ public class UserController {
 
 
     }
-    //TODO: to be removed
-    public Config readJsonFile(String filename)
-      {
-        Config config = new Config();
-        Gson gson = new Gson();
-        System.out.println(filename);
-        if(filename != null)
-        {
-          try {
-            JsonReader reader = new JsonReader(new FileReader(filename));
-            config = gson.fromJson(reader, Config.class);
-          } catch (FileNotFoundException e)
-          {
-            System.exit(0);
-          }
-        }
-        return config;
-      }
+
 }
 

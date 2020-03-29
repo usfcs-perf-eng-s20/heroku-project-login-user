@@ -7,6 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -31,6 +32,6 @@ public interface UserRepository extends CrudRepository<Users, Integer> {
     boolean isLoggedIn(int userId);
 
     @Modifying
-    @Query("update Users u set u.isLoggedIn = ?1 where u.userId = ?2")
-    int loggedI(boolean isLoggedIn, int userId);
+    @Query("update Users u set u.isLoggedIn = ?1, u.lastLogin = ?2 where u.userId = ?3")
+    int loggedI(boolean isLoggedIn, Date lastLogin, int userId);
 }

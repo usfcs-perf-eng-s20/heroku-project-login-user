@@ -40,14 +40,15 @@ public class UserController {
     private UserRepository userRepository;
     @Autowired
     private UpdateService updateService;
-   // private boolean willSaveEdr = false; --> remove this
+
     UserController(UserRepository userRepository) 
     {
         this.userRepository = userRepository;
     }
     //read config files and get values for config and all
     Config config = readJsonFile("config.json");
-   
+    //todo: add five glable variable
+
 
     @GetMapping("/user")
     List<Users> getUser()
@@ -71,7 +72,6 @@ public class UserController {
     	config.setAnalytics(jsonString.isAnalytics());
     	responseMap.put("confirm" , true);
     	responseMap.put("message", "Config updated successfully");
-    	//TODO:// i dont know if I need to change response code here or not ??
     	return new ResponseEntity<Object>(responseMap, HttpStatus.OK);
     }
 
@@ -79,6 +79,7 @@ public class UserController {
     @GetMapping("/isLoggedIn")
     public ResponseEntity<?> isLoggedIn( @RequestParam("userId") int userId, HttpServletRequest request, HttpServletResponse response)
         throws IOException {
+        //TODO: refactor code for save edr  part
     	  Instant startTime = Instant.now(); //for save-edr
         HttpStatus responseStatus = HttpStatus.OK;
         //check user based on user id
@@ -126,6 +127,8 @@ public class UserController {
             	userName = users.get(0).getUserName();
                 id = users.get(0).getUserId();
                 responseMap.put("userId", id);
+
+                //TODO: update last login field time  stamp
                 int row = updateService.loggedIn(true, id);
 
             }else {
@@ -252,7 +255,7 @@ public class UserController {
     }
 
 
-    public ResponseEntity<?> saveEdr(EdrForm edr) {
+    public void saveEdr(EdrForm edr) {
         if (config.isAnalytics()) {
             System.out.println("call anaylistic team");
             Gson gson = new Gson();
@@ -292,9 +295,9 @@ public class UserController {
             System.out.println("not call anaylistic team");
         }
 
-        return null;
+
     }
-    
+    //TODO: to be removed
     public Config readJsonFile(String filename)
       {
         Config config = new Config();
@@ -313,3 +316,4 @@ public class UserController {
         return config;
       }
 }
+

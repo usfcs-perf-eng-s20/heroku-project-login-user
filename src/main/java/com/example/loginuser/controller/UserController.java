@@ -105,7 +105,39 @@ public class UserController {
         return new ResponseEntity<Object>(responseMap, responseStatus);
     }
 
-    
+
+
+    @PostMapping(path = "/logout", consumes ="application/json", produces = "application/json")
+    public ResponseEntity<?> logout(@RequestBody String jsonString, HttpServletResponse response, HttpServletRequest request) {
+        Instant startTime = Instant.now(); //for save-edr
+        ObjectMapper mapper = new ObjectMapper();
+        Map<String, Object> responseMap = new HashMap<>();
+        String userName = "";
+        HttpStatus responseStatus = HttpStatus.OK;
+        //Convert JSON to POJO
+        try {
+            //check if the user exists or not
+            Users checkUser = mapper.readValue(jsonString, Users.class);
+            int id = checkUser.getUserId();
+            responseMap.put("userId", id);
+            Date date = new Date();
+            int row = updateService.logout(false, date, id);
+
+        } catch (JsonProcessingException e) {
+            System.out.println("logout Json parse error");
+        }
+        //save Edr
+        int responseCode = responseStatus.value();
+        boolean successValue = false;
+        if(responseCode == 200) {
+        	successValue = true;
+        }
+        Instant stopTime = Instant.now();
+        edr = new EdrForm(request.getMethod(), request.getRequestURI(), (int)Duration.between(startTime, stopTime).toMillis(), Integer.toString(responseCode), "loginService/login", successValue, Long.toString(System.currentTimeMillis()), userName);
+        saveEdr(edr);
+        return new ResponseEntity<Object>(responseMap, responseStatus);
+    }
+
     @PostMapping(path = "/login", consumes ="application/json", produces = "application/json")
     public ResponseEntity<?> login(@RequestBody String jsonString, HttpServletResponse response, HttpServletRequest request) {
         Instant startTime = Instant.now(); //for save-edr
@@ -122,24 +154,24 @@ public class UserController {
             users = userRepository.findByEmailAndPassword(checkUser.getEmail(), checkUser.getPassword());
             if (users.size() >= 1) {
                 //user is found and log in current user
-            	userName = users.get(0).getUserName();
+                userName = users.get(0).getUserName();
                 id = users.get(0).getUserId();
                 responseMap.put("userId", id);
                 Date date = new Date();
                 int row = updateService.loggedIn(true, date, id);
             }else {
                 //user is not found
-            	userName = userRepository.findUserNameByEmail(checkUser.getEmail());
-            	//set responsecode
-            	if(userName == null || userName == "")
-                  {	response.setStatus(400);
+                userName = userRepository.findUserNameByEmail(checkUser.getEmail());
+                //set responsecode
+                if(userName == null || userName == "")
+                {	response.setStatus(400);
                     responseStatus = HttpStatus.BAD_REQUEST;
-                  }
-            	else {
-                  response.setStatus(401);
-                  responseStatus = HttpStatus.UNAUTHORIZED;
-            	}
-            	responseMap.put("error", "incorrect email / password");
+                }
+                else {
+                    response.setStatus(401);
+                    responseStatus = HttpStatus.UNAUTHORIZED;
+                }
+                responseMap.put("error", "incorrect email / password");
             }
 
         } catch (JsonProcessingException e) {
@@ -149,13 +181,25 @@ public class UserController {
         int responseCode = responseStatus.value();
         boolean successValue = false;
         if(responseCode == 200) {
-        	successValue = true;
+            successValue = true;
         }
         Instant stopTime = Instant.now();
         edr = new EdrForm(request.getMethod(), request.getRequestURI(), (int)Duration.between(startTime, stopTime).toMillis(), Integer.toString(responseCode), "loginService/login", successValue, Long.toString(System.currentTimeMillis()), userName);
         saveEdr(edr);
         return new ResponseEntity<Object>(responseMap, responseStatus);
     }
+
+
+
+
+
+
+
+
+
+
+
+
 
     @PostMapping(path = "/signup", consumes = "application/json", produces = "application/json")
     public ResponseEntity<?> signup(@RequestBody String jsonString, HttpServletResponse response, HttpServletRequest request)  {

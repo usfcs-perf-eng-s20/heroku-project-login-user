@@ -15,4 +15,9 @@ public class UpdateService {
     public int loggedIn(boolean isLoggedIn, Date lastLoggin, int userID){
         return userRepository.loggedI(isLoggedIn, lastLoggin, userID);
     }
+
+    @Transactional
+    public int logout(boolean isLoggedIn, Date lastLoggin, int userID){
+        return userRepository.loggedI(isLoggedIn, lastLoggin, userID);
+    }
 }

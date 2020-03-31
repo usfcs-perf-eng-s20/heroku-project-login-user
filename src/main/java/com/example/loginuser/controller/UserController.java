@@ -70,6 +70,7 @@ public class UserController {
         isAnalytics =  jsonString.isAnalytics();
         System.out.println("Analystics after: " + isAnalytics);
         responseMap.put("confirm" , true);
+        responseMap.put("IsAnalyticsOn" , isAnalytics);
         responseMap.put("message", "Config updated successfully");
         return new ResponseEntity<Object>(responseMap, HttpStatus.OK);
     }
@@ -122,8 +123,8 @@ public class UserController {
             responseMap.put("userId", id);
             Date date = new Date();
             int row = updateService.logout(false, date, id);
-
         } catch (JsonProcessingException e) {
+            responseStatus = HttpStatus.BAD_REQUEST;
             System.out.println("logout Json parse error");
         }
         //save Edr

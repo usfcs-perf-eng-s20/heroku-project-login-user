@@ -283,7 +283,7 @@ public class UserController {
     }
     
     //testing loader.io
-    @GetMapping(value = "/loaderio-e6333d328b79c44bd3b57d59c14ef283")
+    @GetMapping("/loaderio-e6333d328b79c44bd3b57d59c14ef283")
 	public String verifyLoaderIO() {
 		return "loaderio-e6333d328b79c44bd3b57d59c14ef283";
 	}

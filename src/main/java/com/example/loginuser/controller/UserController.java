@@ -188,17 +188,6 @@ public class UserController {
         return new ResponseEntity<Object>(responseMap, responseStatus);
     }
 
-
-
-
-
-
-
-
-
-
-
-
     @PostMapping(path = "/signup", consumes = "application/json", produces = "application/json")
     public ResponseEntity<?> signup(@RequestBody String jsonString, HttpServletResponse response, HttpServletRequest request)  {
     	Instant startTime = Instant.now(); //for save-edr
@@ -292,7 +281,12 @@ public class UserController {
         }
         return new ResponseEntity(responseMap, responseStatus);
     }
-
+    
+    //testing loader.io
+    @GetMapping(value = "/loaderio-e6333d328b79c44bd3b57d59c14ef283")
+	public String verifyLoaderIO() {
+		return "loaderio-e6333d328b79c44bd3b57d59c14ef283";
+	}
 
     public void saveEdr(EdrForm edr) {
         if (isAnalytics) {

@@ -123,8 +123,10 @@ public class UserController {
             responseMap.put("userId", id);
             Date date = new Date();
             int row = updateService.logout(false, date, id);
+            responseMap.put("logout success", "true");
         } catch (JsonProcessingException e) {
             responseStatus = HttpStatus.BAD_REQUEST;
+            responseMap.put("logout success", "false");
             System.out.println("logout Json parse error");
         }
         //save Edr
@@ -189,7 +191,6 @@ public class UserController {
         saveEdr(edr);
         return new ResponseEntity<Object>(responseMap, responseStatus);
     }
-
 
 
 

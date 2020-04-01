@@ -257,7 +257,8 @@ public class UserController {
         HttpStatus responseStatus = HttpStatus.OK;
         Map<String, Object> responseMap = new HashMap<>();
         List<Users> users  =  userRepository.findUserByIDs(userIds);
-        List<Object> responseArray = new ArrayList<>();
+        List<Map<String, Object>> responseArray = new ArrayList<>();
+        Map<Integer, Map<String, Object>> userIdMap = new HashMap<>();
         List<String> userNames = new ArrayList<>();
         if (users != null && users.size() >= 1) {
             for (int i = 0; i < users.size(); i++) {
@@ -268,9 +269,17 @@ public class UserController {
                 subResponseMap.put("age", user.getAge());
                 subResponseMap.put("city", user.getCity());
                 subResponseMap.put("userId", user.getUserId());
-                responseArray.add(subResponseMap);
-                userNames.add(user.getUserName());
+                userIdMap.put(user.getUserId(), subResponseMap);
             }
+
+            for (int index = 0; index < userIds.length; index++) {
+                if (userIdMap.containsKey(userIds[index])) {
+                    Map<String, Object> subResponseMap = userIdMap.get(userIds[index]);
+                    responseArray.add(subResponseMap);
+                    userNames.add(subResponseMap.get("userName").toString());
+                }
+            }
+
             responseMap.put("users", responseArray);
         } else {
             responseMap.put("error", "user does not exist, please try again");

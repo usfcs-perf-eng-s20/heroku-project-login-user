@@ -282,11 +282,17 @@ public class UserController {
         return new ResponseEntity(responseMap, responseStatus);
     }
     
-    //testing loader.io
+    //testing loader.io for production
     @GetMapping("/loaderio-e6333d328b79c44bd3b57d59c14ef283")
 	public String verifyLoaderIO() {
 		return "loaderio-e6333d328b79c44bd3b57d59c14ef283";
 	}
+  //testing loader.io for testing environment
+    @GetMapping("/loaderio-403761023865bb2e806c58aac59dd063")
+	public String verifyLoaderIO_test() {
+		return "loaderio-403761023865bb2e806c58aac59dd063";
+	}
+
 
     public void saveEdr(EdrForm edr) {
         if (isAnalytics) {

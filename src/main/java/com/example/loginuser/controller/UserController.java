@@ -46,7 +46,6 @@ public class UserController {
     @GetMapping("/user")
     List<Users> getUser()
     {
-        System.out.println("Analytics: " + isAnalytics);
         Instant start = Instant.now();
         List<Users> result = (List<Users>) userRepository.findAll();
         Instant stop = Instant.now();
@@ -62,9 +61,7 @@ public class UserController {
         isFave =  jsonString.isFaves();
         isSearch =   jsonString.isSearch();
         isLogin = jsonString.isLogin();
-        System.out.println("Analystics before: " + isAnalytics);
         isAnalytics =  jsonString.isAnalytics();
-        System.out.println("Analystics after: " + isAnalytics);
         responseMap.put("confirm" , true);
         responseMap.put("IsAnalyticsOn" , isAnalytics);
         responseMap.put("message", "Config updated successfully");
@@ -174,7 +171,7 @@ public class UserController {
             }
 
         } catch (JsonProcessingException e) {
-            System.out.println("signup Json parse error");
+            System.out.println("login Json parse error");
         }
         //save Edr
         int responseCode = responseStatus.value();
@@ -305,10 +302,8 @@ public class UserController {
 
     public void saveEdr(EdrForm edr) {
         if (isAnalytics) {
-            System.out.println("call anaylistic team");
             Gson gson = new Gson();
             String jsonString = gson.toJson(edr); // this gives me request body
-            System.out.println("String = " + jsonString);
             try {
                 URL url = new URL ("http://analytics-boot.herokuapp.com/saveEdr");
                 HttpURLConnection con = (HttpURLConnection)url.openConnection();
@@ -320,7 +315,7 @@ public class UserController {
                     byte[] input = jsonString.getBytes("utf-8");
                     os.write(input, 0, input.length);
                 } catch (IOException e) {
-                    System.out.println(e);
+                    System.out.println("write to stream error");
                 }
                 try(BufferedReader br = new BufferedReader(
                     new InputStreamReader(con.getInputStream(), "utf-8"))) {
@@ -329,18 +324,14 @@ public class UserController {
                     while ((responseLine = br.readLine()) != null) {
                         response.append(responseLine.trim());
                     }
-                    System.out.println("response" + response.toString());
+
                 } catch (IOException e) {
-                    System.out.println(e);
+                    System.out.println("get response error");
                 }
-                System.out.println("response code from savedir" + con.getResponseCode());
             } catch (IOException e) {
                 System.out.println("response form savedir" + 400);
-                System.out.println( e.getStackTrace());
 
             }
-        } else {
-            System.out.println("not call anaylistic team");
         }
 
 

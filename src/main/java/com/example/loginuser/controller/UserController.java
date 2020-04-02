@@ -147,9 +147,7 @@ public class UserController {
         try {
             //check if the user exists or not
             Users checkUser = mapper.readValue(jsonString, Users.class);
-            System.out.println("json string for login " + jsonString);
             users = userRepository.findByEmailAndPassword(checkUser.getEmail(), checkUser.getPassword());
-            System.out.println(" pase login success: " + checkUser.toString());
             if (users.size() >= 1) {
                 System.out.println("find user");
                 //user is found and log in current user
@@ -176,6 +174,7 @@ public class UserController {
             }
 
         } catch (JsonProcessingException e) {
+            response.setStatus(401);
             System.out.println("login Json parse error");
         }
         //save Edr

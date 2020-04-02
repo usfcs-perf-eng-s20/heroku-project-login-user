@@ -298,6 +298,13 @@ public class UserController {
 	public String verifyLoaderIO() {
 		return "loaderio-e6333d328b79c44bd3b57d59c14ef283";
 	}
+    
+  //testing loader.io for production - jeremy
+    @GetMapping("/loaderio-54f75d989a33d9a84bd0f541618e2055")
+	public String verifyLoaderIO_J() {
+		return "loaderio-54f75d989a33d9a84bd0f541618e2055";
+	}
+    
   //testing loader.io for testing environment
     @GetMapping("/loaderio-403761023865bb2e806c58aac59dd063")
 	public String verifyLoaderIO_test() {

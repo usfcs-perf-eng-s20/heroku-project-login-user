@@ -165,7 +165,14 @@
       <option name="project" value="LOCAL" />
       <updated>1585699437685</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="delete uselsess logs">
+      <created>1585798420775</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1585798420775</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -190,6 +197,7 @@
     <MESSAGE value="add logout" />
     <MESSAGE value="test all api" />
     <MESSAGE value="fix getuser info order" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix getuser info order" />
+    <MESSAGE value="delete uselsess logs" />
+    <option name="LAST_COMMIT_MESSAGE" value="delete uselsess logs" />
   </component>
 </project>

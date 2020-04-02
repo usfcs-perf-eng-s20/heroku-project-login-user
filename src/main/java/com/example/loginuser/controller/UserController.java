@@ -147,15 +147,20 @@ public class UserController {
         try {
             //check if the user exists or not
             Users checkUser = mapper.readValue(jsonString, Users.class);
+            System.out.println("json string for login " + jsonString);
             users = userRepository.findByEmailAndPassword(checkUser.getEmail(), checkUser.getPassword());
+            System.out.println(" pase login success: " + checkUser.toString());
             if (users.size() >= 1) {
+                System.out.println("find user");
                 //user is found and log in current user
                 userName = users.get(0).getUserName();
                 id = users.get(0).getUserId();
                 responseMap.put("userId", id);
                 Date date = new Date();
                 int row = updateService.loggedIn(true, date, id);
+
             }else {
+                System.out.println("user is not found ");
                 //user is not found
                 userName = userRepository.findUserNameByEmail(checkUser.getEmail());
                 //set responsecode

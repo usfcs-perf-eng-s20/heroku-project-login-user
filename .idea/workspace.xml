@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="eb56418a-21ed-4af2-af57-bffef9791b6a" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/loginuser/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/loginuser/controller/UserController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/example/loginuser/controller/UserController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/loginuser/controller/UserController.class" afterDir="false" />
     </list>
@@ -186,11 +187,28 @@
       <option name="project" value="LOCAL" />
       <updated>1585983299000</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Revert to &quot;add logger&quot;">
+      <created>1585983378950</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1585983378950</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ORDER">
+      <list>
+        <option value="0" />
+        <option value="2" />
+        <option value="3" />
+        <option value="1" />
+      </list>
+    </option>
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -214,6 +232,7 @@
     <MESSAGE value="delete uselsess logs" />
     <MESSAGE value="add logger" />
     <MESSAGE value="Revert &quot;add logger&quot;&#10;&#10;This reverts commit 6b50836b" />
-    <option name="LAST_COMMIT_MESSAGE" value="Revert &quot;add logger&quot;&#10;&#10;This reverts commit 6b50836b" />
+    <MESSAGE value="Revert to &quot;add logger&quot;" />
+    <option name="LAST_COMMIT_MESSAGE" value="Revert to &quot;add logger&quot;" />
   </component>
 </project>

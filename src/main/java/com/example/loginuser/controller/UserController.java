@@ -1,6 +1,7 @@
 package com.example.loginuser.controller;
 
 
+import com.example.loginuser.model.User;
 import com.example.loginuser.model.Users;
 import com.example.loginuser.model.Config;
 import com.example.loginuser.model.EdrForm;
@@ -72,7 +73,6 @@ public class UserController {
 
     @PutMapping("/config")
     public ResponseEntity<?> updateConfig(@RequestBody Config jsonString) {
-        logger.error("error happend");
         Map<String, Object> responseMap = new HashMap<>();
         isFave =  jsonString.isFaves();
         isSearch =   jsonString.isSearch();
@@ -103,7 +103,7 @@ public class UserController {
                 responseMap.put("error" ,"user does not exist, please try again");
             }
         } catch (Exception e) {
-            logger.error("isLoggedIn: Querying the existing user failed");
+            logger.error("isLoggedIn: Querying the existing user failed" + e);
         }
 
         //for Save-edr === START
@@ -143,9 +143,9 @@ public class UserController {
         } catch (JsonProcessingException e) {
             responseStatus = HttpStatus.BAD_REQUEST;
             responseMap.put("logout success", "false");
-            logger.error("logout: Json parse error");
+            logger.error("logout: Json parse error" + e);
         } catch (Exception e) {
-            logger.error("logout: Updating the existing user failed");
+            logger.error("logout: Updating the existing user failed" + e);
         }
         //save Edr
         int responseCode = responseStatus.value();
@@ -171,7 +171,7 @@ public class UserController {
         //Convert JSON to POJO
         try {
             //check if the user exists or not
-            Users checkUser = mapper.readValue(jsonString, Users.class);
+            User checkUser = mapper.readValue(jsonString, User.class);
             users = userRepository.findByEmailAndPassword(checkUser.getEmail(), checkUser.getPassword());
             if (users.size() >= 1) {
                 //user is found and log in current user
@@ -198,9 +198,9 @@ public class UserController {
 
         } catch (JsonProcessingException e) {
             response.setStatus(401);
-            logger.error("login: Json parse error");
+            logger.error("login: Json parse error" + e);
         } catch (Exception e) {
-            logger.error("login: Updating the existing user failed");
+            logger.error("login: Updating the existing user failed" + e);
         }
         //save Edr
         int responseCode = responseStatus.value();
@@ -244,7 +244,7 @@ public class UserController {
         } catch (Exception e) {
             responseMap.put("error", "some error occurs, please try again");
             responseStatus = HttpStatus.BAD_REQUEST;
-            logger.error("signup: Inserting a new user failed");
+            logger.error("signup: Inserting a new user failed" + e);
         }
         //saveEDR code
         int responseCode = responseStatus.value();
@@ -302,7 +302,7 @@ public class UserController {
         } catch (Exception e) {
             responseMap.put("error", "some error occurs, please try again");
             responseStatus = HttpStatus.BAD_REQUEST;
-            logger.error("getUserInfo: Querying a list of users failed");
+            logger.error("getUserInfo: Querying a list of users failed" + e);
         }
         //START saveEDR code
         int responseCode = responseStatus.value();
@@ -342,7 +342,7 @@ public class UserController {
                     byte[] input = jsonString.getBytes("utf-8");
                     os.write(input, 0, input.length);
                 } catch (IOException e) {
-                    logger.error("write to stream error");
+                    logger.error("write to stream error" + e);
                 }
                 try(BufferedReader br = new BufferedReader(
                     new InputStreamReader(con.getInputStream(), "utf-8"))) {
@@ -353,10 +353,10 @@ public class UserController {
                     }
 
                 } catch (IOException e) {
-                    logger.error("get response error");
+                    logger.error("get response error" + e);
                 }
             } catch (IOException e) {
-                logger.error("saveEdr faield");
+                logger.error("saveEdr faield" + e);
 
             }
         }

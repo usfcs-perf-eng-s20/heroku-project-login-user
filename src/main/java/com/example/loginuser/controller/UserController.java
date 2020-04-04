@@ -72,7 +72,7 @@ public class UserController {
 
     @PutMapping("/config")
     public ResponseEntity<?> updateConfig(@RequestBody Config jsonString) {
-        logger.error("error happend");
+       // logger.error("error happend");
         Map<String, Object> responseMap = new HashMap<>();
         isFave =  jsonString.isFaves();
         isSearch =   jsonString.isSearch();
@@ -172,6 +172,8 @@ public class UserController {
         try {
             //check if the user exists or not
             Users checkUser = mapper.readValue(jsonString, Users.class);
+            System.out.println(checkUser.getEmail());
+            System.out.println(checkUser.getPassword());
             users = userRepository.findByEmailAndPassword(checkUser.getEmail(), checkUser.getPassword());
             if (users.size() >= 1) {
                 //user is found and log in current user
@@ -198,7 +200,7 @@ public class UserController {
 
         } catch (JsonProcessingException e) {
             response.setStatus(401);
-            logger.error("login: Json parse error");
+            logger.error("login: Json parse error" + e);
         } catch (Exception e) {
             logger.error("login: Updating the existing user failed");
         }
@@ -360,8 +362,6 @@ public class UserController {
 
             }
         }
-
-
     }
 
 }

@@ -9,8 +9,6 @@ import com.example.loginuser.service.UserRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,8 +34,6 @@ public class UserController {
     @Autowired
     private UpdateService updateService;
 
-    Logger logger = LoggerFactory.getLogger(UserController.class);
-
     UserController(UserRepository userRepository) 
     {
         this.userRepository = userRepository;
@@ -46,18 +42,6 @@ public class UserController {
     boolean isSearch = false;
     boolean isLogin = false;
     boolean isAnalytics = false;
-
-    //testing loader.io for production
-    @GetMapping("/loaderio-e6333d328b79c44bd3b57d59c14ef283")
-    public String verifyLoaderIO() {
-        return "loaderio-e6333d328b79c44bd3b57d59c14ef283";
-    }
-    //testing loader.io for testing environment
-    @GetMapping("/loaderio-403761023865bb2e806c58aac59dd063")
-    public String verifyLoaderIO_test() {
-        return "loaderio-403761023865bb2e806c58aac59dd063";
-    }
-
 
     @GetMapping("/user")
     List<Users> getUser()
@@ -70,9 +54,9 @@ public class UserController {
         return result;
     }
 
+//
     @PutMapping("/config")
     public ResponseEntity<?> updateConfig(@RequestBody Config jsonString) {
-        logger.error("error happend");
         Map<String, Object> responseMap = new HashMap<>();
         isFave =  jsonString.isFaves();
         isSearch =   jsonString.isSearch();
@@ -90,22 +74,15 @@ public class UserController {
         throws IOException {
     	  Instant startTime = Instant.now(); //for save-edr
         HttpStatus responseStatus = HttpStatus.OK;
-        Map<String, Object> responseMap = new HashMap<>();
-        Users user = null;
         //check user based on user id
-        try {
-            user = userRepository.findUserByID(userId);
-            if (user != null) {
-                responseMap.put("userLoggedIn", userRepository.isLoggedIn(userId));
-
-            } else {
-                responseStatus = HttpStatus.BAD_REQUEST;
-                responseMap.put("error" ,"user does not exist, please try again");
-            }
-        } catch (Exception e) {
-            logger.error("isLoggedIn: Querying the existing user failed");
+        Users user  =  userRepository.findUserByID(userId);
+        Map<String, Object> responseMap = new HashMap<>();
+        if (user != null) {
+            responseMap.put("userLoggedIn", userRepository.isLoggedIn(userId));
+        } else {
+            responseStatus = HttpStatus.BAD_REQUEST;
+            responseMap.put("error" ,"user does not exist, please try again");
         }
-
         //for Save-edr === START
         int responseCode = responseStatus.value();
         boolean successValue = false;
@@ -113,7 +90,7 @@ public class UserController {
             successValue = true;
         }
         String userName = "";
-        if (!responseMap.containsKey("error") && user != null) {
+        if (!responseMap.containsKey("error")) {
             userName = user.getUserName();
         }
         Instant stopTime = Instant.now();
@@ -143,9 +120,7 @@ public class UserController {
         } catch (JsonProcessingException e) {
             responseStatus = HttpStatus.BAD_REQUEST;
             responseMap.put("logout success", "false");
-            logger.error("logout: Json parse error");
-        } catch (Exception e) {
-            logger.error("logout: Updating the existing user failed");
+            System.out.println("logout Json parse error");
         }
         //save Edr
         int responseCode = responseStatus.value();
@@ -174,6 +149,7 @@ public class UserController {
             Users checkUser = mapper.readValue(jsonString, Users.class);
             users = userRepository.findByEmailAndPassword(checkUser.getEmail(), checkUser.getPassword());
             if (users.size() >= 1) {
+                System.out.println("find user");
                 //user is found and log in current user
                 userName = users.get(0).getUserName();
                 id = users.get(0).getUserId();
@@ -182,6 +158,7 @@ public class UserController {
                 int row = updateService.loggedIn(true, date, id);
 
             }else {
+                System.out.println("user is not found ");
                 //user is not found
                 userName = userRepository.findUserNameByEmail(checkUser.getEmail());
                 //set responsecode
@@ -198,9 +175,7 @@ public class UserController {
 
         } catch (JsonProcessingException e) {
             response.setStatus(401);
-            logger.error("login: Json parse error");
-        } catch (Exception e) {
-            logger.error("login: Updating the existing user failed");
+            System.out.println("login Json parse error");
         }
         //save Edr
         int responseCode = responseStatus.value();
@@ -241,10 +216,9 @@ public class UserController {
                 responseMap.put("error", "user already exists, please try again");
                 responseStatus = HttpStatus.BAD_REQUEST;
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             responseMap.put("error", "some error occurs, please try again");
             responseStatus = HttpStatus.BAD_REQUEST;
-            logger.error("signup: Inserting a new user failed");
         }
         //saveEDR code
         int responseCode = responseStatus.value();
@@ -272,37 +246,30 @@ public class UserController {
         List<Map<String, Object>> responseArray = new ArrayList<>();
         Map<Integer, Map<String, Object>> userIdMap = new HashMap<>();
         List<String> userNames = new ArrayList<>();
-        try {
-            if (users != null && users.size() >= 1) {
-                for (int i = 0; i < users.size(); i++) {
-                    Users user = users.get(i);
-                    Map<String, Object> subResponseMap = new HashMap<>();
-                    subResponseMap.put("userName", user.getUserName());
-                    subResponseMap.put("email", user.getEmail());
-                    subResponseMap.put("age", user.getAge());
-                    subResponseMap.put("city", user.getCity());
-                    subResponseMap.put("userId", user.getUserId());
-                    userIdMap.put(user.getUserId(), subResponseMap);
-                }
-
-                for (int index = 0; index < userIds.length; index++) {
-                    if (userIdMap.containsKey(userIds[index])) {
-                        Map<String, Object> subResponseMap = userIdMap.get(userIds[index]);
-                        responseArray.add(subResponseMap);
-                        userNames.add(subResponseMap.get("userName").toString());
-                        userIdMap.remove(userIds[index]);
-                    }
-                }
-
-                responseMap.put("users", responseArray);
-            } else {
-                responseMap.put("error", "user does not exist, please try again");
-                responseStatus = HttpStatus.BAD_REQUEST;
+        if (users != null && users.size() >= 1) {
+            for (int i = 0; i < users.size(); i++) {
+                Users user = users.get(i);
+                Map<String, Object> subResponseMap = new HashMap<>();
+                subResponseMap.put("userName", user.getUserName());
+                subResponseMap.put("email", user.getEmail());
+                subResponseMap.put("age", user.getAge());
+                subResponseMap.put("city", user.getCity());
+                subResponseMap.put("userId", user.getUserId());
+                userIdMap.put(user.getUserId(), subResponseMap);
             }
-        } catch (Exception e) {
-            responseMap.put("error", "some error occurs, please try again");
+
+            for (int index = 0; index < userIds.length; index++) {
+                if (userIdMap.containsKey(userIds[index])) {
+                    Map<String, Object> subResponseMap = userIdMap.get(userIds[index]);
+                    responseArray.add(subResponseMap);
+                    userNames.add(subResponseMap.get("userName").toString());
+                }
+            }
+
+            responseMap.put("users", responseArray);
+        } else {
+            responseMap.put("error", "user does not exist, please try again");
             responseStatus = HttpStatus.BAD_REQUEST;
-            logger.error("getUserInfo: Querying a list of users failed");
         }
         //START saveEDR code
         int responseCode = responseStatus.value();
@@ -325,6 +292,23 @@ public class UserController {
         return new ResponseEntity(responseMap, responseStatus);
     }
     
+    //testing loader.io for production
+    @GetMapping("/loaderio-e6333d328b79c44bd3b57d59c14ef283")
+	public String verifyLoaderIO() {
+		return "loaderio-e6333d328b79c44bd3b57d59c14ef283";
+	}
+    
+  //testing loader.io for production - jeremy
+    @GetMapping("/loaderio-54f75d989a33d9a84bd0f541618e2055")
+	public String verifyLoaderIO_J() {
+		return "loaderio-54f75d989a33d9a84bd0f541618e2055";
+	}
+    
+  //testing loader.io for testing environment
+    @GetMapping("/loaderio-403761023865bb2e806c58aac59dd063")
+	public String verifyLoaderIO_test() {
+		return "loaderio-403761023865bb2e806c58aac59dd063";
+	}
 
 
     public void saveEdr(EdrForm edr) {
@@ -342,7 +326,7 @@ public class UserController {
                     byte[] input = jsonString.getBytes("utf-8");
                     os.write(input, 0, input.length);
                 } catch (IOException e) {
-                    logger.error("write to stream error");
+                    System.out.println("write to stream error");
                 }
                 try(BufferedReader br = new BufferedReader(
                     new InputStreamReader(con.getInputStream(), "utf-8"))) {
@@ -353,10 +337,10 @@ public class UserController {
                     }
 
                 } catch (IOException e) {
-                    logger.error("get response error");
+                    System.out.println("get response error");
                 }
             } catch (IOException e) {
-                logger.error("saveEdr faield");
+                System.out.println("response form savedir" + 400);
 
             }
         }

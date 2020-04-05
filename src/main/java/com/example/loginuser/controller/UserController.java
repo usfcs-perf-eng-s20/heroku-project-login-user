@@ -169,7 +169,7 @@ public class UserController {
         try {
             //check if the user exists or not
             LoginUser checkUser = mapper.readValue(jsonString, LoginUser.class);
-            System.out.println(checkUser.getEmail() + "  pass: " + checkUser.getPassword());
+            logger.info(checkUser.getEmail() + "  pass: " + checkUser.getPassword());
 //            users = userRepository.findByEmailAndPassword(checkUser.getEmail(), checkUser.getPassword());
 //            if (users.size() >= 1) {
 //                //user is found and log in current user

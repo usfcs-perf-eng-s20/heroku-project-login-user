@@ -23,6 +23,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.*;
@@ -171,7 +173,10 @@ public class UserController {
         try {
             //check if the user exists or not
         	System.out.println(jsonString);
+        	String bodyRequest = URLDecoder.decode(jsonString, StandardCharsets.UTF_8.toString());
+        	System.out.println(bodyRequest);
         	logger.info(jsonString);
+        	logger.info(bodyRequest);
         	Gson gson = new Gson();
         	Login user = gson.fromJson(jsonString, Login.class);
         	System.out.println(user.getEmail());

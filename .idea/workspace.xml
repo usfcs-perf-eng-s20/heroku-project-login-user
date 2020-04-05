@@ -227,7 +227,14 @@
       <option name="project" value="LOCAL" />
       <updated>1586060865394</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="Merge remote-tracking branch 'origin/save-edr' into save-edr&#10;&#10;# Conflicts:&#10;#&#9;src/main/java/com/example/loginuser/controller/UserController.java&#10;#&#9;target/classes/com/example/loginuser/controller/UserController.class">
+      <created>1586061076242</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1586061076242</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

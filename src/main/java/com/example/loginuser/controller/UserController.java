@@ -169,7 +169,7 @@ public class UserController {
         try {
             //check if the user exists or not
 
-            logger.info(jsonString.getEmail() + "  pass: " + jsonString.getPassword());
+            logger.info(jsonString.getUseremail() + "  pass: " + jsonString.getPassword());
 //            users = userRepository.findByEmailAndPassword(checkUser.getEmail(), checkUser.getPassword());
 //            if (users.size() >= 1) {
 //                //user is found and log in current user
@@ -194,10 +194,10 @@ public class UserController {
 //                responseMap.put("error", "incorrect email / password");
 //            }
 
-        } catch (JsonProcessingException e) {
-            response.setStatus(400);
-            responseStatus = HttpStatus.BAD_REQUEST;
-            logger.error("login: Json parse error" + e);
+//        } catch (JsonProcessingException e) {
+//            response.setStatus(400);
+//            responseStatus = HttpStatus.BAD_REQUEST;
+//            logger.error("login: Json parse error" + e);
         } catch (Exception e) {
             logger.error("login: Updating the existing user failed" + e);
         }

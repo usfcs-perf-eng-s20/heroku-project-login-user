@@ -1,10 +1,7 @@
 package com.example.loginuser.controller;
 
 
-import com.example.loginuser.model.User;
-import com.example.loginuser.model.Users;
-import com.example.loginuser.model.Config;
-import com.example.loginuser.model.EdrForm;
+import com.example.loginuser.model.*;
 import com.example.loginuser.service.UpdateService;
 import com.example.loginuser.service.UserRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -171,30 +168,31 @@ public class UserController {
         //Convert JSON to POJO
         try {
             //check if the user exists or not
-            User checkUser = mapper.readValue(jsonString, User.class);
-            users = userRepository.findByEmailAndPassword(checkUser.getEmail(), checkUser.getPassword());
-            if (users.size() >= 1) {
-                //user is found and log in current user
-                userName = users.get(0).getUserName();
-                id = users.get(0).getUserId();
-                responseMap.put("userId", id);
-                Date date = new Date();
-                int row = updateService.loggedIn(true, date, id);
-
-            }else {
-                //user is not found
-                userName = userRepository.findUserNameByEmail(checkUser.getEmail());
-                //set responsecode
-                if(userName == null || userName == "")
-                {	response.setStatus(400);
-                    responseStatus = HttpStatus.BAD_REQUEST;
-                }
-                else {
-                    response.setStatus(401);
-                    responseStatus = HttpStatus.UNAUTHORIZED;
-                }
-                responseMap.put("error", "incorrect email / password");
-            }
+            LoginUser checkUser = mapper.readValue(jsonString, LoginUser.class);
+            System.out.println(checkUser.getEmail() + "  pass: " + checkUser.getPassword());
+//            users = userRepository.findByEmailAndPassword(checkUser.getEmail(), checkUser.getPassword());
+//            if (users.size() >= 1) {
+//                //user is found and log in current user
+//                userName = users.get(0).getUserName();
+//                id = users.get(0).getUserId();
+//                responseMap.put("userId", id);
+//                Date date = new Date();
+//                int row = updateService.loggedIn(true, date, id);
+//
+//            }else {
+//                //user is not found
+//                userName = userRepository.findUserNameByEmail(checkUser.getEmail());
+//                //set responsecode
+//                if(userName == null || userName == "")
+//                {	response.setStatus(400);
+//                    responseStatus = HttpStatus.BAD_REQUEST;
+//                }
+//                else {
+//                    response.setStatus(401);
+//                    responseStatus = HttpStatus.UNAUTHORIZED;
+//                }
+//                responseMap.put("error", "incorrect email / password");
+//            }
 
         } catch (JsonProcessingException e) {
             response.setStatus(400);

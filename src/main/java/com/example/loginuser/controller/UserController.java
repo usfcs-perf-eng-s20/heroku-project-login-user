@@ -173,34 +173,34 @@ public class UserController {
         	logger.info(jsonString.getEmail() + "  pass: " + jsonString.getPassword());
         	//Gson gson = new Gson();
         	//Login user = gson.fromJson(jsonString, Login.class);
-            users = userRepository.findByEmailAndPassword(jsonString.getEmail(), jsonString.getPassword());
-            if (users.size() >= 1) {
-//                //user is found and log in current user
-                userName = users.get(0).getUserName();
-                id = users.get(0).getUserId();
-                responseMap.put("userId", id);
-                Date date = new Date();
-                int row = updateService.loggedIn(true, date, id);
-
-            }else {
-                //user is not found
-                userName = userRepository.findUserNameByEmail(jsonString.getEmail());
-                //set responsecode
-                if(userName == null || userName == "")
-                {	response.setStatus(400);
-                    responseStatus = HttpStatus.BAD_REQUEST;
-                }
-                else {
-                    response.setStatus(401);
-                    responseStatus = HttpStatus.UNAUTHORIZED;
-                }
-                responseMap.put("error", "incorrect email / password");
-            }
-
-        } catch (JsonSyntaxException e) {
-            response.setStatus(400);
-            responseStatus = HttpStatus.BAD_REQUEST;
-            logger.error("login: Json parse error" + e);
+//            users = userRepository.findByEmailAndPassword(jsonString.getEmail(), jsonString.getPassword());
+//            if (users.size() >= 1) {
+////                //user is found and log in current user
+//                userName = users.get(0).getUserName();
+//                id = users.get(0).getUserId();
+//                responseMap.put("userId", id);
+//                Date date = new Date();
+//                int row = updateService.loggedIn(true, date, id);
+//
+//            }else {
+//                //user is not found
+//                userName = userRepository.findUserNameByEmail(jsonString.getEmail());
+//                //set responsecode
+//                if(userName == null || userName == "")
+//                {	response.setStatus(400);
+//                    responseStatus = HttpStatus.BAD_REQUEST;
+//                }
+//                else {
+//                    response.setStatus(401);
+//                    responseStatus = HttpStatus.UNAUTHORIZED;
+//                }
+//                responseMap.put("error", "incorrect email / password");
+//            }
+//
+//        } catch (JsonSyntaxException e) {
+//            response.setStatus(400);
+//            responseStatus = HttpStatus.BAD_REQUEST;
+//            logger.error("login: Json parse error" + e);
         } catch (Exception e) {
             logger.error("login: Updating the existing user failed" + e);
         }

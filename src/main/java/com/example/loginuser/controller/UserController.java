@@ -168,12 +168,13 @@ public class UserController {
         String userName = "";
         HttpStatus responseStatus = HttpStatus.OK;
         //Convert JSON to POJO
+        logger.debug("JSON string:       " + jsonString);
         try {
             //check if the user exists or not
-        	
         	Gson gson = new Gson();
         	Login user = gson.fromJson(jsonString, Login.class);
             users = userRepository.findByEmailAndPassword(user.getEmail(), user.getPassword());
+            System.out.println("user name " + user.getEmail());
             if (users.size() >= 1) {
             //                //user is found and log in current user
                 userName = users.get(0).getUserName();
@@ -186,22 +187,24 @@ public class UserController {
                 //user is not found
                 userName = userRepository.findUserNameByEmail(user.getEmail());
                 //set responsecode
-                if(userName == null || userName == "")
-                {	response.setStatus(400);
-                    responseStatus = HttpStatus.BAD_REQUEST;
+                if(userName == null || userName == "") {
+                    response.setStatus(403);
+                    responseStatus = HttpStatus.MOVED_PERMANENTLY;
                 }
                 else {
-                    response.setStatus(401);
-                    responseStatus = HttpStatus.UNAUTHORIZED;
+                    response.setStatus(405);
+                    responseStatus = HttpStatus.BAD_GATEWAY;
                 }
                 responseMap.put("error", "incorrect email / password");
             }
 
         } catch (JsonSyntaxException e) {
-            response.setStatus(400);
-            responseStatus = HttpStatus.BAD_REQUEST;
+            response.setStatus(406);
+            responseStatus = HttpStatus.GONE;
             logger.error("login: Json parse error" + e);
         } catch (Exception e) {
+            response.setStatus(407);
+            responseStatus = HttpStatus.UNSUPPORTED_MEDIA_TYPE;
             logger.error("login: Updating the existing user failed" + e);
         }
         //save Edr

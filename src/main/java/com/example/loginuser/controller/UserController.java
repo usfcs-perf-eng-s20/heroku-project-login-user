@@ -157,7 +157,7 @@ public class UserController {
     }
 
     @PostMapping(path = "/login", consumes ="application/json", produces = "application/json")
-    public ResponseEntity<?> login(@RequestBody LoginUser jsonString, HttpServletResponse response, HttpServletRequest request) {
+    public ResponseEntity<?> login(@RequestBody Login jsonString, HttpServletResponse response, HttpServletRequest request) {
         Instant startTime = Instant.now(); //for save-edr
         ObjectMapper mapper = new ObjectMapper();
         List<Users> users = null;
@@ -169,7 +169,7 @@ public class UserController {
         try {
             //check if the user exists or not
 
-            logger.info(jsonString.getUseremail() + "  pass: " + jsonString.getPassword());
+            logger.info(jsonString.getEmail() + "  pass: " + jsonString.getPassword());
 //            users = userRepository.findByEmailAndPassword(checkUser.getEmail(), checkUser.getPassword());
 //            if (users.size() >= 1) {
 //                //user is found and log in current user

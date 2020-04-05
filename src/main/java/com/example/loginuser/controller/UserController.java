@@ -7,6 +7,8 @@ import com.example.loginuser.service.UserRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -157,7 +159,7 @@ public class UserController {
     }
 
     @PostMapping(path = "/login", consumes ="application/json", produces = "application/json")
-    public ResponseEntity<?> login(@RequestBody String jsonString, HttpServletResponse response, HttpServletRequest request) {
+    public ResponseEntity<?> login(@RequestBody Login jsonString, HttpServletResponse response, HttpServletRequest request) {
         Instant startTime = Instant.now(); //for save-edr
         ObjectMapper mapper = new ObjectMapper();
         List<Users> users = null;
@@ -168,10 +170,10 @@ public class UserController {
         //Convert JSON to POJO
         try {
             //check if the user exists or not
-        	Gson gson = new Gson();
-        	Login user = gson.fromJson(jsonString, Login.class);
-            users = userRepository.findByEmailAndPassword(user.getEmail(), user.getPassword());
-            logger.info(user.getEmail() + "  pass: " + user.getPassword());
+        	logger.info(jsonString.getEmail() + "  pass: " + jsonString.getPassword());
+        	//Gson gson = new Gson();
+        	//Login user = gson.fromJson(jsonString, Login.class);
+            users = userRepository.findByEmailAndPassword(jsonString.getEmail(), jsonString.getPassword());
             if (users.size() >= 1) {
 //                //user is found and log in current user
                 userName = users.get(0).getUserName();
@@ -182,7 +184,7 @@ public class UserController {
 
             }else {
                 //user is not found
-                userName = userRepository.findUserNameByEmail(user.getEmail());
+                userName = userRepository.findUserNameByEmail(jsonString.getEmail());
                 //set responsecode
                 if(userName == null || userName == "")
                 {	response.setStatus(400);
@@ -195,10 +197,10 @@ public class UserController {
                 responseMap.put("error", "incorrect email / password");
             }
 
-//        } catch (JsonProcessing e) {
-//            response.setStatus(400);
-//            responseStatus = HttpStatus.BAD_REQUEST;
-//            logger.error("login: Json parse error" + e);
+        } catch (JsonSyntaxException e) {
+            response.setStatus(400);
+            responseStatus = HttpStatus.BAD_REQUEST;
+            logger.error("login: Json parse error" + e);
         } catch (Exception e) {
             logger.error("login: Updating the existing user failed" + e);
         }

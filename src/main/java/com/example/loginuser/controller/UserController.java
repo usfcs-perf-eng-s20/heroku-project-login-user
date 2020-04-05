@@ -157,7 +157,7 @@ public class UserController {
     }
 
     @PostMapping(path = "/login", consumes ="application/json", produces = "application/json")
-    public ResponseEntity<?> login(@RequestBody Login jsonString, HttpServletResponse response, HttpServletRequest request) {
+    public ResponseEntity<?> login(@RequestBody String jsonString, HttpServletResponse response, HttpServletRequest request) {
         Instant startTime = Instant.now(); //for save-edr
         ObjectMapper mapper = new ObjectMapper();
         List<Users> users = null;
@@ -168,33 +168,34 @@ public class UserController {
         //Convert JSON to POJO
         try {
             //check if the user exists or not
-
-            logger.info(jsonString.getEmail() + "  pass: " + jsonString.getPassword());
-//            users = userRepository.findByEmailAndPassword(checkUser.getEmail(), checkUser.getPassword());
-//            if (users.size() >= 1) {
+        	Gson gson = new Gson();
+        	Login user = gson.fromJson(jsonString, Login.class);
+            users = userRepository.findByEmailAndPassword(user.getEmail(), user.getPassword());
+            logger.info(user.getEmail() + "  pass: " + user.getPassword());
+            if (users.size() >= 1) {
 //                //user is found and log in current user
-//                userName = users.get(0).getUserName();
-//                id = users.get(0).getUserId();
-//                responseMap.put("userId", id);
-//                Date date = new Date();
-//                int row = updateService.loggedIn(true, date, id);
-//
-//            }else {
-//                //user is not found
-//                userName = userRepository.findUserNameByEmail(checkUser.getEmail());
-//                //set responsecode
-//                if(userName == null || userName == "")
-//                {	response.setStatus(400);
-//                    responseStatus = HttpStatus.BAD_REQUEST;
-//                }
-//                else {
-//                    response.setStatus(401);
-//                    responseStatus = HttpStatus.UNAUTHORIZED;
-//                }
-//                responseMap.put("error", "incorrect email / password");
-//            }
+                userName = users.get(0).getUserName();
+                id = users.get(0).getUserId();
+                responseMap.put("userId", id);
+                Date date = new Date();
+                int row = updateService.loggedIn(true, date, id);
 
-//        } catch (JsonProcessingException e) {
+            }else {
+                //user is not found
+                userName = userRepository.findUserNameByEmail(user.getEmail());
+                //set responsecode
+                if(userName == null || userName == "")
+                {	response.setStatus(400);
+                    responseStatus = HttpStatus.BAD_REQUEST;
+                }
+                else {
+                    response.setStatus(401);
+                    responseStatus = HttpStatus.UNAUTHORIZED;
+                }
+                responseMap.put("error", "incorrect email / password");
+            }
+
+//        } catch (JsonProcessing e) {
 //            response.setStatus(400);
 //            responseStatus = HttpStatus.BAD_REQUEST;
 //            logger.error("login: Json parse error" + e);

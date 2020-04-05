@@ -161,7 +161,7 @@ public class UserController {
     @PostMapping(path = "/login", consumes ="application/json", produces = "application/json")
     public ResponseEntity<?> login(@RequestBody Login jsonString, HttpServletResponse response, HttpServletRequest request) {
         Instant startTime = Instant.now(); //for save-edr
-        ObjectMapper mapper = new ObjectMapper();
+       // ObjectMapper mapper = new ObjectMapper();
         List<Users> users = null;
         Map<String, Object> responseMap = new HashMap<>();
         int id = -1;

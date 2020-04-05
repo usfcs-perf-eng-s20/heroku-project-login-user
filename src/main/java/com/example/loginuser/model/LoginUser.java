@@ -1,11 +1,11 @@
 package com.example.loginuser.model;
 
 public class LoginUser {
-    String email;
+    String useremail;
     String password;
 
     public String getEmail() {
-        return email;
+        return useremail;
     }
     public String getPassword() {
         return password;

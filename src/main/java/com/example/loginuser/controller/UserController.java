@@ -178,7 +178,7 @@ public class UserController {
         	logger.info(jsonString);
         	logger.info(bodyRequest);
         	Gson gson = new Gson();
-        	Login user = gson.fromJson(jsonString, Login.class);
+        	Login user = gson.fromJson(bodyRequest, Login.class);
         	System.out.println(user.getEmail());
             users = userRepository.findByEmailAndPassword(user.getEmail(), user.getPassword());
             if (users.size() >= 1) {

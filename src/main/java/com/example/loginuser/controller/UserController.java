@@ -197,7 +197,8 @@ public class UserController {
             }
 
         } catch (JsonProcessingException e) {
-            response.setStatus(401);
+            response.setStatus(400);
+            responseStatus = HttpStatus.BAD_REQUEST;
             logger.error("login: Json parse error" + e);
         } catch (Exception e) {
             logger.error("login: Updating the existing user failed" + e);

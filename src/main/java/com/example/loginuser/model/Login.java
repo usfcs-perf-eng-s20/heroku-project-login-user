@@ -1,8 +1,5 @@
 package com.example.loginuser.model;
-import java.io.Serializable;
-
-@SuppressWarnings("serial")
-public class Login implements Serializable {
+public class Login {
 	private String email;
 
     private String password;

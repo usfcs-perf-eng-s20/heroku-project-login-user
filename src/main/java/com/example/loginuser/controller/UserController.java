@@ -159,8 +159,8 @@ public class UserController {
     }
 
     @PostMapping(path = "/login", consumes ="application/json", produces = "application/json")
-    public ResponseEntity<?> login(@RequestBody Login jsonString, HttpServletResponse response, HttpServletRequest request) {
-        System.out.println("jso nlogin: " + jsonString.getEmail() + "  pass world: " + jsonString.getPassword());
+    public ResponseEntity<?> login(@RequestBody String jsonString, HttpServletResponse response, HttpServletRequest request) {
+        System.out.println("jso nlogin: " + jsonString);
 //        Instant startTime = Instant.now(); //for save-edr
 //       // ObjectMapper mapper = new ObjectMapper();
 //        List<Users> users = null;

@@ -173,6 +173,7 @@ public class UserController {
         	
         	//Gson gson = new Gson();
         	//Login user = gson.fromJson(jsonString, Login.class);
+        	System.out.println(user.getEmail());
             users = userRepository.findByEmailAndPassword(user.getEmail(), user.getPassword());
             if (users.size() >= 1) {
             //                //user is found and log in current user

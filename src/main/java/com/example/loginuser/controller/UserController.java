@@ -66,7 +66,7 @@ public class UserController {
         List<Users> result = (List<Users>) userRepository.findAll();
         Instant stop = Instant.now();
         edr = new EdrForm("get", "/user", (int)Duration.between(start, stop).toMillis(), "200", "loginService/user", true, Long.toString(System.currentTimeMillis()), "test");
-        System.out.println(edr.getServiceName());
+        //System.out.println(edr.getServiceName());
         saveEdr(edr);
         return result;
     }
@@ -341,6 +341,7 @@ public class UserController {
 
 
     public void saveEdr(EdrForm edr) {
+    	//System.out.println(edr.getServiceName());
         if (isAnalytics) {
             Gson gson = new Gson();
             String jsonString = gson.toJson(edr); // this gives me request body

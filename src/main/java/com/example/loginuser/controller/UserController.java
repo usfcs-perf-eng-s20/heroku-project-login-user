@@ -161,7 +161,6 @@ public class UserController {
     @PostMapping(path = "/login", consumes ="application/json", produces = "application/json")
     public ResponseEntity<?> login(@RequestBody String jsonString2, HttpServletResponse response, HttpServletRequest request) {
         String jsonString = paramJson(jsonString2);
-        System.out.println(jsonString);
         Instant startTime = Instant.now(); //for save-edr
        // ObjectMapper mapper = new ObjectMapper();
         List<Users> users = null;
@@ -176,7 +175,6 @@ public class UserController {
             Gson gson = new Gson();
         	Login user = gson.fromJson(jsonString, Login.class);
             users = userRepository.findByEmailAndPassword(user.getEmail(), user.getPassword());
-            System.out.println("user name " + user.getEmail());
             if (users.size() >= 1) {
             //                //user is found and log in current user
                 userName = users.get(0).getUserName();
@@ -190,23 +188,23 @@ public class UserController {
                 userName = userRepository.findUserNameByEmail(user.getEmail());
                 //set responsecode
                 if(userName == null || userName == "") {
-                    response.setStatus(403);
-                    responseStatus = HttpStatus.MOVED_PERMANENTLY;
+                    response.setStatus(400);
+                    responseStatus = HttpStatus.BAD_REQUEST;
                 }
                 else {
-                    response.setStatus(405);
-                    responseStatus = HttpStatus.BAD_GATEWAY;
+                    response.setStatus(400);
+                    responseStatus = HttpStatus.BAD_REQUEST;
                 }
                 responseMap.put("error", "incorrect email / password");
             }
 
         } catch (JsonSyntaxException e) {
-            response.setStatus(406);
-            responseStatus = HttpStatus.GONE;
+            response.setStatus(400);
+            responseStatus = HttpStatus.BAD_REQUEST;
             logger.error("login: Json parse error" + e);
         } catch (Exception e) {
-            response.setStatus(407);
-            responseStatus = HttpStatus.UNSUPPORTED_MEDIA_TYPE;
+            response.setStatus(400);
+            responseStatus = HttpStatus.BAD_REQUEST;
             logger.error("login: Updating the existing user failed" + e);
         }
         //save Edr
@@ -228,7 +226,8 @@ public class UserController {
     }
 
     @PostMapping(path = "/signup", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<?> signup(@RequestBody String jsonString, HttpServletResponse response, HttpServletRequest request)  {
+    public ResponseEntity<?> signup(@RequestBody String jsonString2, HttpServletResponse response, HttpServletRequest request)  {
+        String jsonString = paramJson(jsonString2);
     	Instant startTime = Instant.now(); //for save-edr
         HttpStatus responseStatus = HttpStatus.OK;
         ObjectMapper mapper = new ObjectMapper();

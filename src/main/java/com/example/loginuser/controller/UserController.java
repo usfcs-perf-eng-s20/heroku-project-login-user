@@ -162,70 +162,69 @@ public class UserController {
     public ResponseEntity<?> login(@RequestBody String jsonString2, HttpServletResponse response, HttpServletRequest request) {
         String jsonString = paramJson(jsonString2);
         System.out.println(jsonString);
-//        Instant startTime = Instant.now(); //for save-edr
-//       // ObjectMapper mapper = new ObjectMapper();
-//        List<Users> users = null;
-//        Map<String, Object> responseMap = new HashMap<>();
-//        int id = -1;
-//        String userName = "";
-//        HttpStatus responseStatus = HttpStatus.OK;
-//        //Convert JSON to POJO
-//        logger.debug("JSON string:       " + jsonString);
-//        try {
-//            //check if the user exists or not
-//            Gson gson = new Gson();
-//        	Login user = gson.fromJson(jsonString, Login.class);
-//            users = userRepository.findByEmailAndPassword(user.getEmail(), user.getPassword());
-//            System.out.println("user name " + user.getEmail());
-//            if (users.size() >= 1) {
-//            //                //user is found and log in current user
-//                userName = users.get(0).getUserName();
-//                id = users.get(0).getUserId();
-//                responseMap.put("userId", id);
-//                Date date = new Date();
-//                int row = updateService.loggedIn(true, date, id);
-//
-//            }else {
-//                //user is not found
-//                userName = userRepository.findUserNameByEmail(user.getEmail());
-//                //set responsecode
-//                if(userName == null || userName == "") {
-//                    response.setStatus(403);
-//                    responseStatus = HttpStatus.MOVED_PERMANENTLY;
-//                }
-//                else {
-//                    response.setStatus(405);
-//                    responseStatus = HttpStatus.BAD_GATEWAY;
-//                }
-//                responseMap.put("error", "incorrect email / password");
-//            }
-//
-//        } catch (JsonSyntaxException e) {
-//            response.setStatus(406);
-//            responseStatus = HttpStatus.GONE;
-//            logger.error("login: Json parse error" + e);
-//        } catch (Exception e) {
-//            response.setStatus(407);
-//            responseStatus = HttpStatus.UNSUPPORTED_MEDIA_TYPE;
-//            logger.error("login: Updating the existing user failed" + e);
-//        }
-//        //save Edr
-//        int responseCode = responseStatus.value();
-//        boolean successValue = false;
-//        if(responseCode == 200) {
-//            successValue = true;
-//        }
-//        Instant stopTime = Instant.now();
-//        edr = new EdrForm(request.getMethod(), request.getRequestURI(), (int)Duration.between(startTime, stopTime).toMillis(), Integer.toString(responseCode), "loginService/login", successValue, Long.toString(System.currentTimeMillis()), userName);
-//        saveEdr(edr);
-        return null;
-//        return new ResponseEntity<Object>(responseMap, responseStatus);
+        Instant startTime = Instant.now(); //for save-edr
+       // ObjectMapper mapper = new ObjectMapper();
+        List<Users> users = null;
+        Map<String, Object> responseMap = new HashMap<>();
+        int id = -1;
+        String userName = "";
+        HttpStatus responseStatus = HttpStatus.OK;
+        //Convert JSON to POJO
+        logger.debug("JSON string:       " + jsonString);
+        try {
+            //check if the user exists or not
+            Gson gson = new Gson();
+        	Login user = gson.fromJson(jsonString, Login.class);
+            users = userRepository.findByEmailAndPassword(user.getEmail(), user.getPassword());
+            System.out.println("user name " + user.getEmail());
+            if (users.size() >= 1) {
+            //                //user is found and log in current user
+                userName = users.get(0).getUserName();
+                id = users.get(0).getUserId();
+                responseMap.put("userId", id);
+                Date date = new Date();
+                int row = updateService.loggedIn(true, date, id);
+
+            }else {
+                //user is not found
+                userName = userRepository.findUserNameByEmail(user.getEmail());
+                //set responsecode
+                if(userName == null || userName == "") {
+                    response.setStatus(403);
+                    responseStatus = HttpStatus.MOVED_PERMANENTLY;
+                }
+                else {
+                    response.setStatus(405);
+                    responseStatus = HttpStatus.BAD_GATEWAY;
+                }
+                responseMap.put("error", "incorrect email / password");
+            }
+
+        } catch (JsonSyntaxException e) {
+            response.setStatus(406);
+            responseStatus = HttpStatus.GONE;
+            logger.error("login: Json parse error" + e);
+        } catch (Exception e) {
+            response.setStatus(407);
+            responseStatus = HttpStatus.UNSUPPORTED_MEDIA_TYPE;
+            logger.error("login: Updating the existing user failed" + e);
+        }
+        //save Edr
+        int responseCode = responseStatus.value();
+        boolean successValue = false;
+        if(responseCode == 200) {
+            successValue = true;
+        }
+        Instant stopTime = Instant.now();
+        edr = new EdrForm(request.getMethod(), request.getRequestURI(), (int)Duration.between(startTime, stopTime).toMillis(), Integer.toString(responseCode), "loginService/login", successValue, Long.toString(System.currentTimeMillis()), userName);
+        saveEdr(edr);
+        return new ResponseEntity<Object>(responseMap, responseStatus);
     }
 
     public static String paramJson(String paramIn) {
         paramIn = paramIn.replaceAll("=", "\":\"");
         paramIn = paramIn.replaceAll("&", "\",\"");
-        return "{\"" + paramIn + "\"}";
+        return paramIn;
     }
 
     @PostMapping(path = "/signup", consumes = "application/json", produces = "application/json")

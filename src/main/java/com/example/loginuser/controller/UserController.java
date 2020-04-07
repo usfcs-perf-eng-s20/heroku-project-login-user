@@ -58,6 +58,11 @@ public class UserController {
         return "loaderio-403761023865bb2e806c58aac59dd063";
     }
 
+    @GetMapping("/loaderio-38eebd0bc479135b5108105cb8105ca3")
+    public String verifyLoaderIOProduction2() {
+        return "loaderio-38eebd0bc479135b5108105cb8105ca3";
+    }
+
 
     @GetMapping("/user")
     List<Users> getUser()

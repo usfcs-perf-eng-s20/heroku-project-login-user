@@ -102,7 +102,8 @@ public class UserController {
     @GetMapping("/isLoggedIn")
     public ResponseEntity<?> isLoggedIn( @RequestParam("userId") int userId, HttpServletRequest request, HttpServletResponse response)
         throws IOException {
-    	  Instant startTime = Instant.now(); //for save-edr
+        response.addHeader("Access-Control-Allow-Origin", "*");
+        Instant startTime = Instant.now(); //for save-edr
         HttpStatus responseStatus = HttpStatus.OK;
         Map<String, Object> responseMap = new HashMap<>();
         Users user = null;
@@ -140,6 +141,7 @@ public class UserController {
 
     @PostMapping(path = "/logout", consumes ="application/json", produces = "application/json")
     public ResponseEntity<?> logout(@RequestBody String jsonString, HttpServletResponse response, HttpServletRequest request) {
+        response.addHeader("Access-Control-Allow-Origin", "*");
         Instant startTime = Instant.now(); //for save-edr
         ObjectMapper mapper = new ObjectMapper();
         Map<String, Object> responseMap = new HashMap<>();
@@ -175,6 +177,7 @@ public class UserController {
 
     @PostMapping(path = "/login", consumes ="application/json", produces = "application/json")
     public ResponseEntity<?> login(@RequestBody String jsonString2, HttpServletResponse response, HttpServletRequest request) {
+        response.addHeader("Access-Control-Allow-Origin", "*");
         String jsonString = paramJson(jsonString2);
         Instant startTime = Instant.now(); //for save-edr
        // ObjectMapper mapper = new ObjectMapper();
@@ -242,6 +245,7 @@ public class UserController {
 
     @PostMapping(path = "/signup", consumes = "application/json", produces = "application/json")
     public ResponseEntity<?> signup(@RequestBody String jsonString2, HttpServletResponse response, HttpServletRequest request)  {
+        response.addHeader("Access-Control-Allow-Origin", "*");
         String jsonString = paramJson(jsonString2);
     	Instant startTime = Instant.now(); //for save-edr
         HttpStatus responseStatus = HttpStatus.OK;
@@ -292,6 +296,7 @@ public class UserController {
 
     @GetMapping("/getUserInfo")
     public ResponseEntity<?>  userInf(@RequestParam("userId")  Integer[] userIds, HttpServletResponse response, HttpServletRequest request) {
+        response.addHeader("Access-Control-Allow-Origin", "*");
         Instant startTime = Instant.now(); //for save-edr
         HttpStatus responseStatus = HttpStatus.OK;
         Map<String, Object> responseMap = new HashMap<>();

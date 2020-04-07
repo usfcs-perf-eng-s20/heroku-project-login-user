@@ -62,6 +62,15 @@ public class UserController {
     public String verifyLoaderIOProduction2() {
         return "loaderio-38eebd0bc479135b5108105cb8105ca3";
     }
+    
+    //loader.io for the account set up byProfessor
+    @GetMapping("loaderio-ed7a9189a064008ce181d27ebc3edbc9")
+    public String verifyLoaderIOProductionByProfessor() {
+        return "loaderio-ed7a9189a064008ce181d27ebc3edbc9";
+    }
+    
+    
+    
 
 
     @GetMapping("/user")

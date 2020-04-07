@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="eb56418a-21ed-4af2-af57-bffef9791b6a" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/loginuser/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/loginuser/controller/UserController.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -108,7 +109,7 @@
       <workItem from="1582264891609" duration="358000" />
       <workItem from="1582428683106" duration="6026000" />
       <workItem from="1586228977108" duration="361000" />
-      <workItem from="1586279355171" duration="190000" />
+      <workItem from="1586279355171" duration="1339000" />
     </task>
     <task id="LOCAL-00001" summary="add isloggedin cookie value">
       <created>1583375711405</created>

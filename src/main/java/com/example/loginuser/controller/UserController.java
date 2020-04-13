@@ -58,6 +58,20 @@ public class UserController {
         return "loaderio-403761023865bb2e806c58aac59dd063";
     }
 
+    @GetMapping("/loaderio-38eebd0bc479135b5108105cb8105ca3")
+    public String verifyLoaderIOProduction2() {
+        return "loaderio-38eebd0bc479135b5108105cb8105ca3";
+    }
+    
+    //loader.io for the account set up byProfessor
+    @GetMapping("loaderio-ed7a9189a064008ce181d27ebc3edbc9")
+    public String verifyLoaderIOProductionByProfessor() {
+        return "loaderio-ed7a9189a064008ce181d27ebc3edbc9";
+    }
+    
+    
+    
+
 
     @GetMapping("/user")
     List<Users> getUser()
@@ -65,7 +79,8 @@ public class UserController {
         Instant start = Instant.now();
         List<Users> result = (List<Users>) userRepository.findAll();
         Instant stop = Instant.now();
-        edr = new EdrForm("get", "/user", (int)Duration.between(start, stop).toMillis(), "200", "loginService/user", true, Long.toString(System.currentTimeMillis()), "test");
+        edr = new EdrForm("get", "/user", (int)Duration.between(start, stop).toMillis(), "200", "login", true, Long.toString(System.currentTimeMillis()), "test");
+        //System.out.println(edr.getServiceName());
         saveEdr(edr);
         return result;
     }
@@ -87,7 +102,8 @@ public class UserController {
     @GetMapping("/isLoggedIn")
     public ResponseEntity<?> isLoggedIn( @RequestParam("userId") int userId, HttpServletRequest request, HttpServletResponse response)
         throws IOException {
-    	  Instant startTime = Instant.now(); //for save-edr
+        response.addHeader("Access-Control-Allow-Origin", "*");
+        Instant startTime = Instant.now(); //for save-edr
         HttpStatus responseStatus = HttpStatus.OK;
         Map<String, Object> responseMap = new HashMap<>();
         Users user = null;
@@ -116,7 +132,7 @@ public class UserController {
             userName = user.getUserName();
         }
         Instant stopTime = Instant.now();
-        edr = new EdrForm(request.getMethod(), request.getRequestURI(), (int)Duration.between(startTime, stopTime).toMillis(), Integer.toString(responseCode), "loginService/isLoggedIn", successValue, Long.toString(System.currentTimeMillis()), userName);
+        edr = new EdrForm(request.getMethod(), request.getRequestURI(), (int)Duration.between(startTime, stopTime).toMillis(), Integer.toString(responseCode), "login", successValue, Long.toString(System.currentTimeMillis()), userName);
         saveEdr(edr);
         return new ResponseEntity<Object>(responseMap, responseStatus);
     }
@@ -125,6 +141,7 @@ public class UserController {
 
     @PostMapping(path = "/logout", consumes ="application/json", produces = "application/json")
     public ResponseEntity<?> logout(@RequestBody String jsonString, HttpServletResponse response, HttpServletRequest request) {
+        response.addHeader("Access-Control-Allow-Origin", "*");
         Instant startTime = Instant.now(); //for save-edr
         ObjectMapper mapper = new ObjectMapper();
         Map<String, Object> responseMap = new HashMap<>();
@@ -153,13 +170,14 @@ public class UserController {
         	successValue = true;
         }
         Instant stopTime = Instant.now();
-        edr = new EdrForm(request.getMethod(), request.getRequestURI(), (int)Duration.between(startTime, stopTime).toMillis(), Integer.toString(responseCode), "loginService/login", successValue, Long.toString(System.currentTimeMillis()), userName);
+        edr = new EdrForm(request.getMethod(), request.getRequestURI(), (int)Duration.between(startTime, stopTime).toMillis(), Integer.toString(responseCode), "login", successValue, Long.toString(System.currentTimeMillis()), userName);
         saveEdr(edr);
         return new ResponseEntity<Object>(responseMap, responseStatus);
     }
 
     @PostMapping(path = "/login", consumes ="application/json", produces = "application/json")
     public ResponseEntity<?> login(@RequestBody String jsonString2, HttpServletResponse response, HttpServletRequest request) {
+        response.addHeader("Access-Control-Allow-Origin", "*");
         String jsonString = paramJson(jsonString2);
         Instant startTime = Instant.now(); //for save-edr
        // ObjectMapper mapper = new ObjectMapper();
@@ -214,7 +232,7 @@ public class UserController {
             successValue = true;
         }
         Instant stopTime = Instant.now();
-        edr = new EdrForm(request.getMethod(), request.getRequestURI(), (int)Duration.between(startTime, stopTime).toMillis(), Integer.toString(responseCode), "loginService/login", successValue, Long.toString(System.currentTimeMillis()), userName);
+        edr = new EdrForm(request.getMethod(), request.getRequestURI(), (int)Duration.between(startTime, stopTime).toMillis(), Integer.toString(responseCode), "login", successValue, Long.toString(System.currentTimeMillis()), userName);
         saveEdr(edr);
         return new ResponseEntity<Object>(responseMap, responseStatus);
     }
@@ -227,6 +245,7 @@ public class UserController {
 
     @PostMapping(path = "/signup", consumes = "application/json", produces = "application/json")
     public ResponseEntity<?> signup(@RequestBody String jsonString2, HttpServletResponse response, HttpServletRequest request)  {
+        response.addHeader("Access-Control-Allow-Origin", "*");
         String jsonString = paramJson(jsonString2);
     	Instant startTime = Instant.now(); //for save-edr
         HttpStatus responseStatus = HttpStatus.OK;
@@ -270,13 +289,14 @@ public class UserController {
         if (!responseMap.containsKey("error")) {
             userName = users.get(0).getUserName();
         }
-        edr = new EdrForm(request.getMethod(), request.getRequestURI(), (int)Duration.between(startTime, stopTime).toMillis(), Integer.toString(responseCode), "loginService/signup", successValue, Long.toString(System.currentTimeMillis()), userName);
+        edr = new EdrForm(request.getMethod(), request.getRequestURI(), (int)Duration.between(startTime, stopTime).toMillis(), Integer.toString(responseCode), "login", successValue, Long.toString(System.currentTimeMillis()), userName);
         saveEdr(edr);
         return new ResponseEntity(responseMap, responseStatus);
     }
 
     @GetMapping("/getUserInfo")
     public ResponseEntity<?>  userInf(@RequestParam("userId")  Integer[] userIds, HttpServletResponse response, HttpServletRequest request) {
+        response.addHeader("Access-Control-Allow-Origin", "*");
         Instant startTime = Instant.now(); //for save-edr
         HttpStatus responseStatus = HttpStatus.OK;
         Map<String, Object> responseMap = new HashMap<>();
@@ -326,11 +346,11 @@ public class UserController {
         Instant stopTime = Instant.now(); //for save-edr
 
         if (responseMap.containsKey("error")) {
-            edr = new EdrForm(request.getMethod(), request.getRequestURI(), (int) Duration.between(startTime, stopTime).toMillis(), Integer.toString(responseCode), "loginService/getUserInfo", successValue, Long.toString(System.currentTimeMillis()), "");
+            edr = new EdrForm(request.getMethod(), request.getRequestURI(), (int) Duration.between(startTime, stopTime).toMillis(), Integer.toString(responseCode), "login", successValue, Long.toString(System.currentTimeMillis()), "");
             saveEdr(edr);
         } else {
             for (String userName : userNames) {
-                edr = new EdrForm(request.getMethod(), request.getRequestURI(), (int) Duration.between(startTime, stopTime).toMillis(), Integer.toString(responseCode), "loginService/getUserInfo", successValue, Long.toString(System.currentTimeMillis()), userName);
+                edr = new EdrForm(request.getMethod(), request.getRequestURI(), (int) Duration.between(startTime, stopTime).toMillis(), Integer.toString(responseCode), "login", successValue, Long.toString(System.currentTimeMillis()), userName);
                 saveEdr(edr);
             }
         }
@@ -340,6 +360,7 @@ public class UserController {
 
 
     public void saveEdr(EdrForm edr) {
+    	//System.out.println(edr.getServiceName());
         if (isAnalytics) {
             Gson gson = new Gson();
             String jsonString = gson.toJson(edr); // this gives me request body

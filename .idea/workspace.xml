@@ -2,7 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="eb56418a-21ed-4af2-af57-bffef9791b6a" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/loginuser/model/LogErrorMessage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/loginuser/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/loginuser/controller/UserController.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -351,6 +354,7 @@
     <MESSAGE value="print json string" />
     <MESSAGE value="convert to json format string" />
     <MESSAGE value="remove system" />
-    <option name="LAST_COMMIT_MESSAGE" value="remove system" />
+    <MESSAGE value="befre merge" />
+    <option name="LAST_COMMIT_MESSAGE" value="befre merge" />
   </component>
 </project>

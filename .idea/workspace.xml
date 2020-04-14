@@ -2,8 +2,23 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="eb56418a-21ed-4af2-af57-bffef9791b6a" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/loaderio-ed7a9189a064008ce181d27ebc3edbc9.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/newrelic/CHANGELOG" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/newrelic/LICENSE" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/newrelic/README.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/newrelic/THIRD_PARTY_NOTICES.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/newrelic/extension.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/newrelic/newrelic-api-javadoc.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/newrelic/newrelic-api-sources.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/newrelic/newrelic-api.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/newrelic/newrelic.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/newrelic/newrelic.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/newrelic/nrcerts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/loginuser/model/LogErrorMessage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/loginuser/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/loginuser/controller/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/loginuser/controller/UserController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/loginuser/controller/UserController.class" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -110,6 +125,7 @@
       <workItem from="1582428683106" duration="6026000" />
       <workItem from="1586228977108" duration="361000" />
       <workItem from="1586279355171" duration="1339000" />
+      <workItem from="1586838808559" duration="300000" />
     </task>
     <task id="LOCAL-00001" summary="add isloggedin cookie value">
       <created>1583375711405</created>
@@ -300,7 +316,14 @@
       <option name="project" value="LOCAL" />
       <updated>1586133732133</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="remove system">
+      <created>1586136120174</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1586136120174</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -344,6 +367,8 @@
     <MESSAGE value="comment code for login" />
     <MESSAGE value="print json string" />
     <MESSAGE value="convert to json format string" />
-    <option name="LAST_COMMIT_MESSAGE" value="convert to json format string" />
+    <MESSAGE value="remove system" />
+    <MESSAGE value="befre merge" />
+    <option name="LAST_COMMIT_MESSAGE" value="befre merge" />
   </component>
 </project>

@@ -26,10 +26,10 @@ common: &default_settings
   # to this application. To report data to more than one application 
   # (useful for rollup reporting), separate the application names with ";".
   # For example, to report data to "My Application" and "My Application 2" use this:
-  app_name: Login Service
+  #app_name: My Application;My Application 2
   # This setting is required. Up to 3 different application names can be specified.
   # The first application name must be unique.
-  app_name: My Application
+  app_name: Login Service
 
   # To enable high security, set this property to true. When in high
   # security mode, the agent will use SSL and obfuscated SQL. Additionally,

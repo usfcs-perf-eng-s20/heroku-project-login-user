@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="eb56418a-21ed-4af2-af57-bffef9791b6a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Procfile" beforeDir="false" afterPath="$PROJECT_DIR$/Procfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/analytics.iml" beforeDir="false" afterPath="$PROJECT_DIR$/analytics.iml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -111,7 +110,7 @@
       <workItem from="1586228977108" duration="361000" />
       <workItem from="1586279355171" duration="1339000" />
       <workItem from="1586838808559" duration="2626000" />
-      <workItem from="1586922256216" duration="675000" />
+      <workItem from="1586922256216" duration="1004000" />
     </task>
     <task id="LOCAL-00001" summary="add isloggedin cookie value">
       <created>1583375711405</created>

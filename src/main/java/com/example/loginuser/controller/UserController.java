@@ -114,7 +114,7 @@ public class UserController {
             user = userRepository.findUserByID(userId);
             if (user != null) {
                 responseMap.put("userLoggedIn", userRepository.isLoggedIn(userId));
-
+                message = "Checking user login succeed";
             } else {
                 responseStatus = HttpStatus.BAD_REQUEST;
                 message = "user does not exist, please try again";
@@ -163,7 +163,7 @@ public class UserController {
             responseMap.put("userId", id);
             Date date = new Date();
             int row = updateService.logout(false, date, id);
-            message = "logout success";
+            message = "logout succeed";
             responseMap.put(message, "true");
         } catch (JsonProcessingException e) {
             responseStatus = HttpStatus.BAD_REQUEST;
@@ -210,7 +210,7 @@ public class UserController {
                 responseMap.put("userId", id);
                 Date date = new Date();
                 int row = updateService.loggedIn(true, date, id);
-
+                message = "Login succeed";
             }else {
                 //user is not found
                 userName = userRepository.findUserNameByEmail(user.getEmail());
@@ -280,6 +280,7 @@ public class UserController {
                 if (users.size() >= 1) {
                     id = users.get(0).getUserId();
                     responseMap.put("userId", id);
+                    message = "signup succeed";
                 } else {
                     message = "error when creating new user, please try again";
                     responseMap.put("error", message);
@@ -350,6 +351,7 @@ public class UserController {
                 }
 
                 responseMap.put("users", responseArray);
+                message = "getUserInfo succeed";
             } else {
                 message = "user does not exist, please try again";
                 responseMap.put("error", message);

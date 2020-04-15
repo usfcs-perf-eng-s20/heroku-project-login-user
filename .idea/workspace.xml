@@ -3,9 +3,18 @@
   <component name="ChangeListManager">
     <list default="true" id="eb56418a-21ed-4af2-af57-bffef9791b6a" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/loginuser/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/loginuser/controller/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/loginuser/model/LogErrorMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/loginuser/model/LogErrorMessage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/loginuser/controller/UserController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/loginuser/controller/UserController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/opt/newrelic/CHANGELOG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/opt/newrelic/LICENSE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/opt/newrelic/README.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/opt/newrelic/THIRD_PARTY_NOTICES.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/opt/newrelic/extension.xsd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/opt/newrelic/newrelic-api-javadoc.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/opt/newrelic/newrelic-api-sources.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/opt/newrelic/newrelic-api.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/opt/newrelic/newrelic.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/opt/newrelic/newrelic.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/opt/newrelic/nrcerts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -111,7 +120,8 @@
       <workItem from="1582264891609" duration="358000" />
       <workItem from="1582428683106" duration="6026000" />
       <workItem from="1586228977108" duration="361000" />
-      <workItem from="1586279355171" duration="190000" />
+      <workItem from="1586279355171" duration="1339000" />
+      <workItem from="1586838808559" duration="1613000" />
     </task>
     <task id="LOCAL-00001" summary="add isloggedin cookie value">
       <created>1583375711405</created>
@@ -309,14 +319,7 @@
       <option name="project" value="LOCAL" />
       <updated>1586136120174</updated>
     </task>
-    <task id="LOCAL-00029" summary="add log error message">
-      <created>1586801692940</created>
-      <option name="number" value="00029" />
-      <option name="presentableId" value="LOCAL-00029" />
-      <option name="project" value="LOCAL" />
-      <updated>1586801692940</updated>
-    </task>
-    <option name="localTasksCounter" value="30" />
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -362,7 +365,6 @@
     <MESSAGE value="convert to json format string" />
     <MESSAGE value="remove system" />
     <MESSAGE value="befre merge" />
-    <MESSAGE value="add log error message" />
-    <option name="LAST_COMMIT_MESSAGE" value="add log error message" />
+    <option name="LAST_COMMIT_MESSAGE" value="befre merge" />
   </component>
 </project>

@@ -9,9 +9,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -92,14 +94,15 @@ public class UserController {
         responseMap.put("confirm" , true);
         responseMap.put("IsAnalyticsOn" , isAnalytics);
         responseMap.put("message", "Config updated successfully");
-        return new ResponseEntity<Object>(responseMap, HttpStatus.OK);
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.set("Access-Control-Allow-Origin", "*");
+        return new ResponseEntity<Object>(responseMap, responseHeaders, HttpStatus.OK);
     }
 
 
     @GetMapping("/isLoggedIn")
     public ResponseEntity<?> isLoggedIn( @RequestParam("userId") int userId, HttpServletRequest request, HttpServletResponse response)
         throws IOException {
-        response.addHeader("Access-Control-Allow-Origin", "*");
         Instant startTime = Instant.now(); //for save-edr
         HttpStatus responseStatus = HttpStatus.OK;
         Map<String, Object> responseMap = new HashMap<>();
@@ -134,15 +137,17 @@ public class UserController {
         Instant stopTime = Instant.now();
         edr = new EdrForm(request.getMethod(), request.getRequestURI(), (int)Duration.between(startTime, stopTime).toMillis(), Integer.toString(responseCode), "login", successValue, Long.toString(System.currentTimeMillis()), userName);
         saveEdr(edr);
+
         logger.info(new LogErrorMessage("isLoggedIn", (int)Duration.between(startTime, stopTime).toMillis(), responseCode, message).toString());
-        return new ResponseEntity<Object>(responseMap, responseStatus);
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.set("Access-Control-Allow-Origin", "*");
+        return new ResponseEntity<Object>(responseMap, responseHeaders, responseStatus);
     }
 
 
 
     @PostMapping(path = "/logout", consumes ="application/json", produces = "application/json")
     public ResponseEntity<?> logout(@RequestBody String jsonString, HttpServletResponse response, HttpServletRequest request) {
-        response.addHeader("Access-Control-Allow-Origin", "*");
         Instant startTime = Instant.now(); //for save-edr
         ObjectMapper mapper = new ObjectMapper();
         Map<String, Object> responseMap = new HashMap<>();
@@ -177,12 +182,13 @@ public class UserController {
         edr = new EdrForm(request.getMethod(), request.getRequestURI(), (int)Duration.between(startTime, stopTime).toMillis(), Integer.toString(responseCode), "login", successValue, Long.toString(System.currentTimeMillis()), userName);
         saveEdr(edr);
         logger.info(new LogErrorMessage("logout", (int)Duration.between(startTime, stopTime).toMillis(), responseCode, message).toString());
-        return new ResponseEntity<Object>(responseMap, responseStatus);
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.set("Access-Control-Allow-Origin", "*");
+        return new ResponseEntity<Object>(responseMap, responseHeaders, responseStatus);
     }
 
     @PostMapping(path = "/login", consumes ="application/json", produces = "application/json")
     public ResponseEntity<?> login(@RequestBody String jsonString2, HttpServletResponse response, HttpServletRequest request) {
-        response.addHeader("Access-Control-Allow-Origin", "*");
         String jsonString = paramJson(jsonString2);
         Instant startTime = Instant.now(); //for save-edr
         List<Users> users = null;
@@ -241,7 +247,9 @@ public class UserController {
         edr = new EdrForm(request.getMethod(), request.getRequestURI(), (int)Duration.between(startTime, stopTime).toMillis(), Integer.toString(responseCode), "login", successValue, Long.toString(System.currentTimeMillis()), userName);
         saveEdr(edr);
         logger.info(new LogErrorMessage("login", (int)Duration.between(startTime, stopTime).toMillis(), responseCode, message).toString());
-        return new ResponseEntity<Object>(responseMap, responseStatus);
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.set("Access-Control-Allow-Origin", "*");
+        return new ResponseEntity<Object>(responseMap, responseHeaders, responseStatus);
     }
 
     //helper function to convert query parameter to json format
@@ -253,7 +261,6 @@ public class UserController {
 
     @PostMapping(path = "/signup", consumes = "application/json", produces = "application/json")
     public ResponseEntity<?> signup(@RequestBody String jsonString2, HttpServletResponse response, HttpServletRequest request)  {
-        response.addHeader("Access-Control-Allow-Origin", "*");
         String jsonString = paramJson(jsonString2);
     	  Instant startTime = Instant.now(); //for save-edr
         HttpStatus responseStatus = HttpStatus.OK;
@@ -305,12 +312,13 @@ public class UserController {
         edr = new EdrForm(request.getMethod(), request.getRequestURI(), (int)Duration.between(startTime, stopTime).toMillis(), Integer.toString(responseCode), "login", successValue, Long.toString(System.currentTimeMillis()), userName);
         saveEdr(edr);
         logger.info(new LogErrorMessage("signup", (int)Duration.between(startTime, stopTime).toMillis(), responseCode, message).toString());
-        return new ResponseEntity(responseMap, responseStatus);
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.set("Access-Control-Allow-Origin", "*");
+        return new ResponseEntity<Object>(responseMap, responseHeaders, responseStatus);
     }
 
     @GetMapping("/getUserInfo")
     public ResponseEntity<?>  userInf(@RequestParam("userId")  Integer[] userIds, HttpServletResponse response, HttpServletRequest request) {
-        response.addHeader("Access-Control-Allow-Origin", "*");
         Instant startTime = Instant.now(); //for save-edr
         HttpStatus responseStatus = HttpStatus.OK;
         Map<String, Object> responseMap = new HashMap<>();
@@ -374,7 +382,9 @@ public class UserController {
             }
         }
         logger.info(new LogErrorMessage("getUserInfo", (int)Duration.between(startTime, stopTime).toMillis(), responseCode, message).toString());
-        return new ResponseEntity(responseMap, responseStatus);
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.set("Access-Control-Allow-Origin", "*");
+        return new ResponseEntity<Object>(responseMap, responseHeaders, responseStatus);
     }
 
 

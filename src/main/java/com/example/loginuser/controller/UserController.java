@@ -254,9 +254,9 @@ public class UserController {
         saveEdr(edr);
         logger.info(new LogErrorMessage("login", "login", (int)Duration.between(startTime, stopTime).toMillis(), responseCode, message).toString());
         HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.set("Access-Control-Allow-Origin", "*");
-        responseHeaders.set("Access-Control-Allow-Methods", "*");
-        responseHeaders.set("Access-Control-Allow-Headers", "*");
+//        responseHeaders.set("Access-Control-Allow-Origin", "*");
+//        responseHeaders.set("Access-Control-Allow-Methods", "*");
+//        responseHeaders.set("Access-Control-Allow-Headers", "*");
         return new ResponseEntity<Object>(responseMap, responseHeaders, responseStatus);
     }
 

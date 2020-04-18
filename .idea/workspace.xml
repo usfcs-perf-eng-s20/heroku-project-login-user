@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="eb56418a-21ed-4af2-af57-bffef9791b6a" name="Default Changelist" comment="" />
+    <list default="true" id="eb56418a-21ed-4af2-af57-bffef9791b6a" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/loginuser/LoginUserApplication.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/loginuser/LoginUserApplication.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/loginuser/model/Users.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/loginuser/model/Users.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/loginuser/service/UserRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/loginuser/service/UserRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/loginuser/service/UserService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/loginuser/service/UserService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/loginuser/service/UserServiceInterface.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/loginuser/service/UserServiceInterface.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/com/example/loginuser/LoginUsersApplicationTests.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/com/example/loginuser/LoginUsersApplicationTests.class" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -352,6 +359,7 @@
     <MESSAGE value="convert to json format string" />
     <MESSAGE value="remove system" />
     <MESSAGE value="befre merge" />
-    <option name="LAST_COMMIT_MESSAGE" value="befre merge" />
+    <MESSAGE value="change log name" />
+    <option name="LAST_COMMIT_MESSAGE" value="change log name" />
   </component>
 </project>

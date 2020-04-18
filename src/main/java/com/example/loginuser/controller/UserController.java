@@ -96,6 +96,8 @@ public class UserController {
         responseMap.put("message", "Config updated successfully");
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set("Access-Control-Allow-Origin", "*");
+        responseHeaders.set("Access-Control-Allow-Methods", "*");
+        responseHeaders.set("Access-Control-Allow-Headers", "*");
         return new ResponseEntity<Object>(responseMap, responseHeaders, HttpStatus.OK);
     }
 
@@ -141,6 +143,8 @@ public class UserController {
         logger.info(new LogErrorMessage("login", "isLoggedIn", (int)Duration.between(startTime, stopTime).toMillis(), responseCode, message).toString());
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set("Access-Control-Allow-Origin", "*");
+        responseHeaders.set("Access-Control-Allow-Methods", "*");
+        responseHeaders.set("Access-Control-Allow-Headers", "*");
         return new ResponseEntity<Object>(responseMap, responseHeaders, responseStatus);
     }
 
@@ -184,6 +188,8 @@ public class UserController {
         logger.info(new LogErrorMessage("login","logout", (int)Duration.between(startTime, stopTime).toMillis(), responseCode, message).toString());
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set("Access-Control-Allow-Origin", "*");
+        responseHeaders.set("Access-Control-Allow-Methods", "*");
+        responseHeaders.set("Access-Control-Allow-Headers", "*");
         return new ResponseEntity<Object>(responseMap, responseHeaders, responseStatus);
     }
 
@@ -249,6 +255,8 @@ public class UserController {
         logger.info(new LogErrorMessage("login", "login", (int)Duration.between(startTime, stopTime).toMillis(), responseCode, message).toString());
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set("Access-Control-Allow-Origin", "*");
+        responseHeaders.set("Access-Control-Allow-Methods", "*");
+        responseHeaders.set("Access-Control-Allow-Headers", "*");
         return new ResponseEntity<Object>(responseMap, responseHeaders, responseStatus);
     }
 
@@ -314,6 +322,8 @@ public class UserController {
         logger.info(new LogErrorMessage("login","signup", (int)Duration.between(startTime, stopTime).toMillis(), responseCode, message).toString());
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set("Access-Control-Allow-Origin", "*");
+        responseHeaders.set("Access-Control-Allow-Methods", "*");
+        responseHeaders.set("Access-Control-Allow-Headers", "*");
         return new ResponseEntity<Object>(responseMap, responseHeaders, responseStatus);
     }
 
@@ -384,6 +394,8 @@ public class UserController {
         logger.info(new LogErrorMessage("login","getUserInfo", (int)Duration.between(startTime, stopTime).toMillis(), responseCode, message).toString());
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set("Access-Control-Allow-Origin", "*");
+        responseHeaders.set("Access-Control-Allow-Methods", "*");
+        responseHeaders.set("Access-Control-Allow-Headers", "*");
         return new ResponseEntity<Object>(responseMap, responseHeaders, responseStatus);
     }
 

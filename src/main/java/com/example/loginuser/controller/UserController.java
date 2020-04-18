@@ -29,7 +29,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.*;
 
-
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 public class UserController {
     EdrForm edr;

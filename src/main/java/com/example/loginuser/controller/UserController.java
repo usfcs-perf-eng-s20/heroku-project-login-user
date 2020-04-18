@@ -138,7 +138,7 @@ public class UserController {
         edr = new EdrForm(request.getMethod(), request.getRequestURI(), (int)Duration.between(startTime, stopTime).toMillis(), Integer.toString(responseCode), "login", successValue, Long.toString(System.currentTimeMillis()), userName);
         saveEdr(edr);
 
-        logger.info(new LogErrorMessage("isLoggedIn", (int)Duration.between(startTime, stopTime).toMillis(), responseCode, message).toString());
+        logger.info(new LogErrorMessage("login", "isLoggedIn", (int)Duration.between(startTime, stopTime).toMillis(), responseCode, message).toString());
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set("Access-Control-Allow-Origin", "*");
         return new ResponseEntity<Object>(responseMap, responseHeaders, responseStatus);
@@ -181,7 +181,7 @@ public class UserController {
         Instant stopTime = Instant.now();
         edr = new EdrForm(request.getMethod(), request.getRequestURI(), (int)Duration.between(startTime, stopTime).toMillis(), Integer.toString(responseCode), "login", successValue, Long.toString(System.currentTimeMillis()), userName);
         saveEdr(edr);
-        logger.info(new LogErrorMessage("logout", (int)Duration.between(startTime, stopTime).toMillis(), responseCode, message).toString());
+        logger.info(new LogErrorMessage("login","logout", (int)Duration.between(startTime, stopTime).toMillis(), responseCode, message).toString());
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set("Access-Control-Allow-Origin", "*");
         return new ResponseEntity<Object>(responseMap, responseHeaders, responseStatus);
@@ -246,7 +246,7 @@ public class UserController {
         Instant stopTime = Instant.now();
         edr = new EdrForm(request.getMethod(), request.getRequestURI(), (int)Duration.between(startTime, stopTime).toMillis(), Integer.toString(responseCode), "login", successValue, Long.toString(System.currentTimeMillis()), userName);
         saveEdr(edr);
-        logger.info(new LogErrorMessage("login", (int)Duration.between(startTime, stopTime).toMillis(), responseCode, message).toString());
+        logger.info(new LogErrorMessage("login", "login", (int)Duration.between(startTime, stopTime).toMillis(), responseCode, message).toString());
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set("Access-Control-Allow-Origin", "*");
         return new ResponseEntity<Object>(responseMap, responseHeaders, responseStatus);
@@ -311,7 +311,7 @@ public class UserController {
         }
         edr = new EdrForm(request.getMethod(), request.getRequestURI(), (int)Duration.between(startTime, stopTime).toMillis(), Integer.toString(responseCode), "login", successValue, Long.toString(System.currentTimeMillis()), userName);
         saveEdr(edr);
-        logger.info(new LogErrorMessage("signup", (int)Duration.between(startTime, stopTime).toMillis(), responseCode, message).toString());
+        logger.info(new LogErrorMessage("login","signup", (int)Duration.between(startTime, stopTime).toMillis(), responseCode, message).toString());
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set("Access-Control-Allow-Origin", "*");
         return new ResponseEntity<Object>(responseMap, responseHeaders, responseStatus);
@@ -381,7 +381,7 @@ public class UserController {
                 saveEdr(edr);
             }
         }
-        logger.info(new LogErrorMessage("getUserInfo", (int)Duration.between(startTime, stopTime).toMillis(), responseCode, message).toString());
+        logger.info(new LogErrorMessage("login","getUserInfo", (int)Duration.between(startTime, stopTime).toMillis(), responseCode, message).toString());
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set("Access-Control-Allow-Origin", "*");
         return new ResponseEntity<Object>(responseMap, responseHeaders, responseStatus);

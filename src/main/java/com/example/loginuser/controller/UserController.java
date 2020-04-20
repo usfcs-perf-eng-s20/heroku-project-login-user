@@ -147,7 +147,8 @@ public class UserController {
 
 
     @PostMapping(path = "/logout", consumes ="application/json", produces = "application/json")
-    public ResponseEntity<?> logout(@RequestBody String jsonString, HttpServletResponse response, HttpServletRequest request) {
+    public ResponseEntity<?> logout(@RequestBody String jsonString2, HttpServletResponse response, HttpServletRequest request) {
+        String jsonString = paramJson(jsonString2);
         Instant startTime = Instant.now(); //for save-edr
         ObjectMapper mapper = new ObjectMapper();
         Map<String, Object> responseMap = new HashMap<>();

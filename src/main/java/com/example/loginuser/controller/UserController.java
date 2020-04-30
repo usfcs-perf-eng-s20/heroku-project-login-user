@@ -83,7 +83,8 @@ public class UserController {
         saveEdr(edr);
         return result;
     }
-
+    
+    @CrossOrigin(methods = RequestMethod.PUT)
     @PutMapping("/config")
     public ResponseEntity<?> updateConfig(@RequestBody Config jsonString) {
         Map<String, Object> responseMap = new HashMap<>();
@@ -99,6 +100,7 @@ public class UserController {
     }
 
 
+    @CrossOrigin(methods = RequestMethod.GET)
     @GetMapping("/isLoggedIn")
     public ResponseEntity<?> isLoggedIn( @RequestParam("userId") int userId, HttpServletRequest request, HttpServletResponse response)
         throws IOException {
@@ -143,7 +145,7 @@ public class UserController {
     }
 
 
-
+    @CrossOrigin(methods = RequestMethod.POST)
     @PostMapping(path = "/logout", consumes ="application/json", produces = "application/json")
     public ResponseEntity<?> logout(@RequestBody String jsonString2, HttpServletResponse response, HttpServletRequest request) {
         String jsonString = paramJson(jsonString2);
@@ -185,6 +187,7 @@ public class UserController {
         return new ResponseEntity<Object>(responseMap, responseHeaders, responseStatus);
     }
 
+    @CrossOrigin(methods = RequestMethod.POST)
     @PostMapping(path = "/login", consumes ="application/json", produces = "application/json")
     public ResponseEntity<?> login(@RequestBody String jsonString2, HttpServletResponse response, HttpServletRequest request) {
         String jsonString = paramJson(jsonString2);
@@ -255,7 +258,8 @@ public class UserController {
         paramIn = paramIn.replaceAll("&", "\",\"");
         return paramIn;
     }
-
+    
+    @CrossOrigin(methods = RequestMethod.POST)
     @PostMapping(path = "/signup", consumes = "application/json", produces = "application/json")
     public ResponseEntity<?> signup(@RequestBody String jsonString2, HttpServletResponse response, HttpServletRequest request)  {
         String jsonString = paramJson(jsonString2);
@@ -312,7 +316,8 @@ public class UserController {
         HttpHeaders responseHeaders = new HttpHeaders();
         return new ResponseEntity<Object>(responseMap, responseHeaders, responseStatus);
     }
-
+    
+    @CrossOrigin(methods = RequestMethod.GET)
     @GetMapping("/getUserInfo")
     public ResponseEntity<?>  userInf(@RequestParam("userId")  Integer[] userIds, HttpServletResponse response, HttpServletRequest request) {
         Instant startTime = Instant.now(); //for save-edr

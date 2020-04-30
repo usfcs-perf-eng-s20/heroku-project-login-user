@@ -84,8 +84,7 @@ public class UserController {
         return result;
     }
     
-    @CrossOrigin(methods = RequestMethod.PUT)
-    @PutMapping("/config")
+    @RequestMapping(path = "/config" , method = RequestMethod.PUT)
     public ResponseEntity<?> updateConfig(@RequestBody Config jsonString) {
         Map<String, Object> responseMap = new HashMap<>();
         isFave = jsonString.isFaves();
@@ -100,7 +99,7 @@ public class UserController {
     }
 
 
-    @CrossOrigin(methods = RequestMethod.GET)
+    
     @GetMapping("/isLoggedIn")
     public ResponseEntity<?> isLoggedIn( @RequestParam("userId") int userId, HttpServletRequest request, HttpServletResponse response)
         throws IOException {
@@ -187,8 +186,7 @@ public class UserController {
         return new ResponseEntity<Object>(responseMap, responseHeaders, responseStatus);
     }
 
-    @CrossOrigin(methods = RequestMethod.POST)
-    @PostMapping(path = "/login", consumes ="application/json", produces = "application/json")
+    @RequestMapping(path = "/login", consumes ="application/json", produces = "application/json" , method = RequestMethod.POST)
     public ResponseEntity<?> login(@RequestBody String jsonString2, HttpServletResponse response, HttpServletRequest request) {
         String jsonString = paramJson(jsonString2);
         Instant startTime = Instant.now(); //for save-edr

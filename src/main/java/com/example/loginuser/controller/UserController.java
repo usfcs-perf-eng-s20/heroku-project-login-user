@@ -100,7 +100,7 @@ public class UserController {
 
 
     
-    @GetMapping("/isLoggedIn")
+    @RequestMapping(path = "/isLoggedIn", method = RequestMethod.GET)
     public ResponseEntity<?> isLoggedIn( @RequestParam("userId") int userId, HttpServletRequest request, HttpServletResponse response)
         throws IOException {
         Instant startTime = Instant.now(); //for save-edr
@@ -144,8 +144,8 @@ public class UserController {
     }
 
 
-    @CrossOrigin(methods = RequestMethod.POST)
-    @PostMapping(path = "/logout", consumes ="application/json", produces = "application/json")
+    
+    @RequestMapping(path = "/logout", consumes ="application/json", produces = "application/json", method = RequestMethod.POST)
     public ResponseEntity<?> logout(@RequestBody String jsonString2, HttpServletResponse response, HttpServletRequest request) {
         String jsonString = paramJson(jsonString2);
         Instant startTime = Instant.now(); //for save-edr
@@ -257,8 +257,8 @@ public class UserController {
         return paramIn;
     }
     
-    @CrossOrigin(methods = RequestMethod.POST)
-    @PostMapping(path = "/signup", consumes = "application/json", produces = "application/json")
+//    @CrossOrigin(methods = RequestMethod.POST)
+    @RequestMapping(path = "/signup", consumes = "application/json", produces = "application/json" , method = RequestMethod.POST)
     public ResponseEntity<?> signup(@RequestBody String jsonString2, HttpServletResponse response, HttpServletRequest request)  {
         String jsonString = paramJson(jsonString2);
     	  Instant startTime = Instant.now(); //for save-edr
@@ -315,8 +315,8 @@ public class UserController {
         return new ResponseEntity<Object>(responseMap, responseHeaders, responseStatus);
     }
     
-    @CrossOrigin(methods = RequestMethod.GET)
-    @GetMapping("/getUserInfo")
+//    @CrossOrigin(methods = RequestMethod.GET)
+    @RequestMapping(path = "/getUserInfo" , method = RequestMethod.GET)
     public ResponseEntity<?>  userInf(@RequestParam("userId")  Integer[] userIds, HttpServletResponse response, HttpServletRequest request) {
         Instant startTime = Instant.now(); //for save-edr
         HttpStatus responseStatus = HttpStatus.OK;
